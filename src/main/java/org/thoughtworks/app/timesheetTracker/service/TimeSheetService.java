@@ -5,37 +5,34 @@ import org.springframework.stereotype.Service;
 import org.thoughtworks.app.timesheetTracker.models.MissingTimeSheetData;
 import org.thoughtworks.app.timesheetTracker.repository.S3Client;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.partitioningBy;
+import static java.util.stream.Collectors.*;
 
-/**
- * Created by deeptim on 1/23/17.
- */
 @Service
 public class TimeSheetService {
 
     @Autowired
     S3Client s3Client;
 
-    public List<HashMap<String, String>> getTimeSheetFileForLastWeek(){
-        List<MissingTimeSheetData> missingTimeSheetDataList =  s3Client.getTimeSheetFileForLastWeek();
+    public List<Map<String, String>> getMissingTimeSheetCountForIndiaOffices() {
 
-        return missingTimeSheetDataList.stream().collect(partitioningBy(e -> e.getCountry().equals("India"),
-                groupingBy(MissingTimeSheetData::getWorkingLocation, counting())))
+        return s3Client.getTimeSheetFileForLastWeek().stream()
+                .collect(partitioningBy(timeSheetEntry -> timeSheetEntry.getCountry().equals("India"),
+                        groupingBy(MissingTimeSheetData::getWorkingLocation, counting())))
                 .get(true)
                 .entrySet().stream()
-                .map(cityEntry -> {
-                    HashMap<String, String> result = new HashMap<>();
-                    result.put("workingLocation", cityEntry.getKey());
-                    result.put("numberOfMissingTimeSheet", String.valueOf(cityEntry.getValue()));
-                    return result;
-                })
-                .collect(Collectors.toList());
+                .map(cityEntry -> Collections.unmodifiableMap(Stream.of(
+                        new AbstractMap.SimpleEntry<>("workingLocation", cityEntry.getKey()),
+                        new AbstractMap.SimpleEntry<>("numberOfMissingTimeSheet", String.valueOf(cityEntry.getValue()))
+                        ).collect(Collectors.toMap(
+                        missingTimeSheetEntryForIndianCity -> missingTimeSheetEntryForIndianCity.getKey(),
+                        missingTimeSheetEntryForIndianCity -> missingTimeSheetEntryForIndianCity.getValue())
+                        )
+                ))
+                .collect(toList());
     }
 
 }

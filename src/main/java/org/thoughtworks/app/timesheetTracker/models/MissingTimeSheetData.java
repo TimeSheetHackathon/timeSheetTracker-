@@ -9,7 +9,7 @@ public class MissingTimeSheetData {
 	private String workingLocation;
 	private String country;
 	
-	public MissingTimeSheetData(HashMap i) {
+	public MissingTimeSheetData(Map i) {
 		id = (String) i.get("id");
 		workingLocation = (String) i.get("working-office");
 		country = (String) i.get("country");

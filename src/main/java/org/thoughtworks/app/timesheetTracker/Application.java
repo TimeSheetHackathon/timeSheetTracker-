@@ -13,7 +13,6 @@ import org.thoughtworks.app.timesheetTracker.models.MissingTimeSheetData;
 import org.thoughtworks.app.timesheetTracker.repository.S3Client;;
 
 @SpringBootApplication
-@ComponentScan(basePackages = { "org.thoughtworks.app.timesheetTracker.*" })
 public class Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
