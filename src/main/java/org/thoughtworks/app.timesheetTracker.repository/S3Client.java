@@ -14,6 +14,7 @@ import org.thoughtworks.app.timesheetTracker.models.MissingTimeSheetData;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,10 +36,8 @@ public class S3Client {
         try {
             return parseEmployeeData(s3Object.getObjectContent());
         } catch (IOException e) {
-            e.printStackTrace();
+            return Collections.emptyList();
         }
-        return null;
-
     }
 
     private List<MissingTimeSheetData> parseEmployeeData(InputStream input) throws IOException {
@@ -54,7 +53,6 @@ public class S3Client {
                             .build();
                 })
                 .collect(Collectors.toList());
-
     }
 
     private int getPreviousWeek() {
