@@ -36,38 +36,23 @@ public class TimeSheetServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        result = Stream.of(
-
-                Collections.unmodifiableMap(Stream.of(
-                        new SimpleEntry<>("id", "1"),
-                        new SimpleEntry<>("working-office", "bangalore"),
-                        new SimpleEntry<>("country", "India")
-                        ).collect(Collectors.toMap(
-                        SimpleEntry::getKey,
-                        SimpleEntry::getValue)
-                        )
-                ),
-                Collections.unmodifiableMap(Stream.of(
-                        new SimpleEntry<>("id", "2"),
-                        new SimpleEntry<>("working-office", "pune"),
-                        new SimpleEntry<>("country", "India")
-                        ).collect(Collectors.toMap(
-                        SimpleEntry::getKey,
-                        SimpleEntry::getValue)
-                        )
-                ),
-                Collections.unmodifiableMap(Stream.of(
-                        new SimpleEntry<>("id", "1"),
-                        new SimpleEntry<>("working-office", "sf"),
-                        new SimpleEntry<>("country", "US")
-                        ).collect(Collectors.toMap(
-                        SimpleEntry::getKey,
-                        SimpleEntry::getValue)
-                        )
-                )
-        ).map(MissingTimeSheetData::new)
-                .collect(Collectors.toList());
-
+        result = Arrays.asList(
+                MissingTimeSheetData.builder()
+                        .employeeId("1")
+                        .country("India")
+                        .workingLocation("BANGALORE")
+                        .build(),
+                MissingTimeSheetData.builder()
+                        .employeeId("2")
+                        .country("India")
+                        .workingLocation("PUNE")
+                        .build(),
+                MissingTimeSheetData.builder()
+                        .employeeId("3")
+                        .country("US")
+                        .workingLocation("sf")
+                        .build()
+        );
     }
 
     @Test
