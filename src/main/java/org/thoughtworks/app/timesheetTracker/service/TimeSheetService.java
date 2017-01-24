@@ -15,6 +15,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.lang.String.valueOf;
 import static java.util.stream.Collectors.*;
 
 @Service
@@ -32,14 +33,14 @@ public class TimeSheetService {
     public List<Map<String, String>> getMissingTimeSheetCountForIndiaOffices() {
         return getIndiaMissingTimeSheet()
                 .entrySet().stream()
-                .map(getEntryMapFunction(x-> String.valueOf(x.getValue())))
+                .map(getEntryMapFunction(x-> valueOf(x.getValue())))
                 .collect(toList());
     }
 
     public List<Map<String, String>> getMissingTimeSheetPercentagesForIndiaOffices() {
         return getIndiaMissingTimeSheet()
                 .entrySet().stream()
-                .map(getEntryMapFunction(x-> String.valueOf(calculatePercentage(x))))
+                .map(getEntryMapFunction(x-> valueOf(calculatePercentage(x))))
                 .collect(toList());
     }
 

@@ -10,8 +10,8 @@ import java.util.Map;
 
 @RestController
 public class TimeSheetTrackerController {
- @Autowired
- TimeSheetService timeSheetService;
+    @Autowired
+    private TimeSheetService timeSheetService;
 
     @RequestMapping("/timeSheetNumberMissing")
     public List<Map<String, String>> totalTimeSheetNumberMissing() {

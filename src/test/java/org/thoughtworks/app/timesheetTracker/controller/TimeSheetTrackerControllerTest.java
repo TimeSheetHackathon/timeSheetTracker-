@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TimeSheetTrackerControllerTest {
 
     @MockBean
-    TimeSheetService timeSheetService;
+    private TimeSheetService timeSheetService;
 
     @Autowired
     private MockMvc mockMvc;

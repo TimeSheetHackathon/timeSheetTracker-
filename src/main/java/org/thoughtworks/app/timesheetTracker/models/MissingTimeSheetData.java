@@ -1,29 +1,12 @@
 package org.thoughtworks.app.timesheetTracker.models;
 
-import java.util.HashMap;
-import java.util.Map;
+import lombok.Builder;
+import lombok.Data;
 
+@Data
+@Builder
 public class MissingTimeSheetData {
-
-	private String id;
+	private String employeeId;
 	private String workingLocation;
 	private String country;
-	
-	public MissingTimeSheetData(Map i) {
-		id = (String) i.get("id");
-		workingLocation = ((String) i.get("working-office")).toUpperCase();
-		country = (String) i.get("country");
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public String getWorkingLocation() {
-		return workingLocation;
-	}
-
-	public String getCountry() {
-		return country;
-	}
 }

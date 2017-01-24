@@ -14,9 +14,12 @@ import org.thoughtworks.app.timesheetTracker.models.MissingTimeSheetData;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import static java.lang.String.valueOf;
 
 
 @Repository
@@ -33,18 +36,23 @@ public class S3Client {
         try {
             return parseEmployeeData(s3Object.getObjectContent());
         } catch (IOException e) {
-            e.printStackTrace();
+            return Collections.emptyList();
         }
-        return null;
-
     }
 
     private List<MissingTimeSheetData> parseEmployeeData(InputStream input) throws IOException {
         final ObjectMapper mapper = new ObjectMapper();
         return new JSONArray(IOUtils.toString(input)).toList().stream()
-                .map(e -> new MissingTimeSheetData(mapper.convertValue(e, HashMap.class)))
-                .collect(Collectors.toList());
+                .map(e -> {
+                    Map timeSheetDataMap = mapper.convertValue(e, Map.class);
 
+                    return MissingTimeSheetData.builder()
+                            .country(valueOf(timeSheetDataMap.get("country")).toUpperCase())
+                            .employeeId(valueOf(timeSheetDataMap.get("id")).toUpperCase())
+                            .workingLocation(valueOf(timeSheetDataMap.get("working-office")).toUpperCase())
+                            .build();
+                })
+                .collect(Collectors.toList());
     }
 
     private int getPreviousWeek() {

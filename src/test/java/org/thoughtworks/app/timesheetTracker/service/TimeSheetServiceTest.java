@@ -11,7 +11,6 @@ import org.thoughtworks.app.timesheetTracker.repository.PeopleCounter;
 import org.thoughtworks.app.timesheetTracker.repository.S3Client;
 
 import java.util.*;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -33,41 +32,35 @@ public class TimeSheetServiceTest {
     private TimeSheetService timeSheetService;
 
     private List<MissingTimeSheetData> result;
+    private Map employeeCount;
 
     @Before
     public void setUp() throws Exception {
-        result = Stream.of(
+        result = Arrays.asList(
+                MissingTimeSheetData.builder()
+                        .employeeId("1")
+                        .country("India")
+                        .workingLocation("BANGALORE")
+                        .build(),
+                MissingTimeSheetData.builder()
+                        .employeeId("2")
+                        .country("India")
+                        .workingLocation("PUNE")
+                        .build(),
+                MissingTimeSheetData.builder()
+                        .employeeId("3")
+                        .country("US")
+                        .workingLocation("sf")
+                        .build()
+        );
 
-                Collections.unmodifiableMap(Stream.of(
-                        new SimpleEntry<>("id", "1"),
-                        new SimpleEntry<>("working-office", "bangalore"),
-                        new SimpleEntry<>("country", "India")
-                        ).collect(Collectors.toMap(
-                        SimpleEntry::getKey,
-                        SimpleEntry::getValue)
-                        )
-                ),
-                Collections.unmodifiableMap(Stream.of(
-                        new SimpleEntry<>("id", "2"),
-                        new SimpleEntry<>("working-office", "pune"),
-                        new SimpleEntry<>("country", "India")
-                        ).collect(Collectors.toMap(
-                        SimpleEntry::getKey,
-                        SimpleEntry::getValue)
-                        )
-                ),
-                Collections.unmodifiableMap(Stream.of(
-                        new SimpleEntry<>("id", "1"),
-                        new SimpleEntry<>("working-office", "sf"),
-                        new SimpleEntry<>("country", "US")
-                        ).collect(Collectors.toMap(
-                        SimpleEntry::getKey,
-                        SimpleEntry::getValue)
-                        )
-                )
-        ).map(MissingTimeSheetData::new)
-                .collect(Collectors.toList());
-
+        employeeCount = Collections.unmodifiableMap(Stream.of(
+                new AbstractMap.SimpleEntry<>("BANGALORE", 2),
+                new AbstractMap.SimpleEntry<>("GURGAON", 2),
+                new AbstractMap.SimpleEntry<>("PUNE", 4),
+                new AbstractMap.SimpleEntry<>("CHENNAI", 5),
+                new AbstractMap.SimpleEntry<>("HYDERABAD", 1)
+        ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)));;
     }
 
     @Test
@@ -91,7 +84,6 @@ public class TimeSheetServiceTest {
 
     @Test
     public void getMissingTimeSheetPercentagesForIndiaOffices() throws Exception {
-        Map employeeCount = getPeopleCounter();
         when(client.getTimeSheetFileForLastWeek()).thenReturn(result);
         when(peopleCounter.getPeopleCount()).thenReturn(employeeCount);
 
@@ -109,16 +101,4 @@ public class TimeSheetServiceTest {
         final List<Map<String, String>> pune = splitByCity.get("PUNE");
         assertEquals("25", pune.get(0).get("numberOfMissingTimeSheet"));
     }
-
-
-    private Map getPeopleCounter() {
-        return Collections.unmodifiableMap(Stream.of(
-                new SimpleEntry<>("BANGALORE", 2),
-                new SimpleEntry<>("GURGAON", 2),
-                new SimpleEntry<>("PUNE", 4),
-                new SimpleEntry<>("CHENNAI", 5),
-                new SimpleEntry<>("HYDERABAD", 1)
-        ).collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)));
-    }
-
 }
