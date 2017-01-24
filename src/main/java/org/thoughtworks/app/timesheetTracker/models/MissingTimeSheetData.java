@@ -11,7 +11,7 @@ public class MissingTimeSheetData {
 	
 	public MissingTimeSheetData(Map i) {
 		id = (String) i.get("id");
-		workingLocation = (String) i.get("working-office");
+		workingLocation = ((String) i.get("working-office")).toUpperCase();
 		country = (String) i.get("country");
 	}
 

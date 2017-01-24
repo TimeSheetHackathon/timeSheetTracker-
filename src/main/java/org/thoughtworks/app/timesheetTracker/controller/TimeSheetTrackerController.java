@@ -13,9 +13,14 @@ public class TimeSheetTrackerController {
  @Autowired
  TimeSheetService timeSheetService;
 
-    @RequestMapping("/")
-    public List<Map<String, String>> totalTimeSheetMissing() {
+    @RequestMapping("/timeSheetNumberMissing")
+    public List<Map<String, String>> totalTimeSheetNumberMissing() {
         return timeSheetService.getMissingTimeSheetCountForIndiaOffices();
 
+    }
+    
+    @RequestMapping("/timeSheetPercentageMissing")
+    public List<Map<String, String>> totalTimeSheetPercentageMissing() {
+        return timeSheetService.getMissingTimeSheetPercentagesForIndiaOffices();
     }
 }

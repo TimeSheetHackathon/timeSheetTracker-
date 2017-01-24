@@ -27,9 +27,17 @@ public class TimeSheetTrackerControllerTest {
 
     @Test
     public void testTotalTimeSheetMissingData() throws Exception {
-        mockMvc.perform(get("/"))
+        mockMvc.perform(get("/timeSheetNumberMissing"))
                 .andExpect(status().isOk());
 
         verify(timeSheetService, times(1)).getMissingTimeSheetCountForIndiaOffices();
+    }
+
+    @Test
+    public void testTimeSheetPercentageMissing() throws Exception {
+        mockMvc.perform(get("/timeSheetPercentageMissing"))
+                .andExpect(status().isOk());
+
+        verify(timeSheetService, times(1)).getMissingTimeSheetPercentagesForIndiaOffices();
     }
 }
