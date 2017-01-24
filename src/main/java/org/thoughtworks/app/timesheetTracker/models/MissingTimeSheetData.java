@@ -1,6 +1,5 @@
 package org.thoughtworks.app.timesheetTracker.models;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class MissingTimeSheetData {
