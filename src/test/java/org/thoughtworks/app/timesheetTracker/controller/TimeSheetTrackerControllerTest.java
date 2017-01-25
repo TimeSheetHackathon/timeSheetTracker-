@@ -40,4 +40,12 @@ public class TimeSheetTrackerControllerTest {
 
         verify(timeSheetService, times(1)).getMissingTimeSheetPercentagesForIndiaOffices();
     }
+
+    @Test
+    public void testMissingTimeSheetForAProject() throws Exception {
+        mockMvc.perform(get("/missingTimeSheetByProjects"))
+                .andExpect(status().isOk());
+
+        verify(timeSheetService, times(1)).getMissingTimeSheetForProjects();
+    }
 }

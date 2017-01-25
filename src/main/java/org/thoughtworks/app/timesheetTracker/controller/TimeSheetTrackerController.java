@@ -23,4 +23,9 @@ public class TimeSheetTrackerController {
     public List<Map<String, String>> totalTimeSheetPercentageMissing() {
         return timeSheetService.getMissingTimeSheetPercentagesForIndiaOffices();
     }
+
+    @RequestMapping("/missingTimeSheetByProjects")
+    public List<Map<String, String>> missingTimeSheetByProjects() {
+        return timeSheetService.getMissingTimeSheetForProjects();
+    }
 }

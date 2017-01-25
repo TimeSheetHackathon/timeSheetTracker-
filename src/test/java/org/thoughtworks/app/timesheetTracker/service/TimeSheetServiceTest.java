@@ -39,18 +39,21 @@ public class TimeSheetServiceTest {
         result = Arrays.asList(
                 MissingTimeSheetData.builder()
                         .employeeId("1")
-                        .country("India")
+                        .country("INDIA")
                         .workingLocation("BANGALORE")
+                        .projectName("KROGER")
                         .build(),
                 MissingTimeSheetData.builder()
                         .employeeId("2")
-                        .country("India")
+                        .country("INDIA")
                         .workingLocation("PUNE")
+                        .projectName("DELTA")
                         .build(),
                 MissingTimeSheetData.builder()
                         .employeeId("3")
                         .country("US")
                         .workingLocation("sf")
+                        .projectName("Cricket")
                         .build()
         );
 
@@ -60,14 +63,14 @@ public class TimeSheetServiceTest {
                 new AbstractMap.SimpleEntry<>("PUNE", 4),
                 new AbstractMap.SimpleEntry<>("CHENNAI", 5),
                 new AbstractMap.SimpleEntry<>("HYDERABAD", 1)
-        ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)));;
+        ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)));
+        when(client.getTimeSheetFileForLastWeek()).thenReturn(result);
     }
 
     @Test
     public void getMissingTimeSheetCountForIndiaOffices() throws Exception {
-        when(client.getTimeSheetFileForLastWeek()).thenReturn(result);
-
-        final List<Map<String, String>> serviceResult = timeSheetService.getMissingTimeSheetCountForIndiaOffices();
+        final List<Map<String, String>> serviceResult =
+                timeSheetService.getMissingTimeSheetCountForIndiaOffices();
 
         assertEquals(2, serviceResult.size());
 
@@ -84,10 +87,10 @@ public class TimeSheetServiceTest {
 
     @Test
     public void getMissingTimeSheetPercentagesForIndiaOffices() throws Exception {
-        when(client.getTimeSheetFileForLastWeek()).thenReturn(result);
         when(peopleCounter.getPeopleCount()).thenReturn(employeeCount);
 
-        final List<Map<String, String>> serviceResult = timeSheetService.getMissingTimeSheetPercentagesForIndiaOffices();
+        final List<Map<String, String>> serviceResult =
+                timeSheetService.getMissingTimeSheetPercentagesForIndiaOffices();
 
         assertEquals(2, serviceResult.size());
 
@@ -100,5 +103,14 @@ public class TimeSheetServiceTest {
 
         final List<Map<String, String>> pune = splitByCity.get("PUNE");
         assertEquals("25", pune.get(0).get("numberOfMissingTimeSheet"));
+    }
+
+    @Test
+    public void getMissingTimSheetDataForProjects() throws Exception {
+        when(client.getTimeSheetFileForProjectLastWeek()).thenReturn(result);
+        List<Map<String, String>> missingTimeSheetForProjects = timeSheetService.getMissingTimeSheetForProjects();
+        assertEquals(2, missingTimeSheetForProjects.size());
+
+
     }
 }
