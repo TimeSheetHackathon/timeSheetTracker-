@@ -70,7 +70,7 @@ public class TimeSheetServiceTest {
     @Test
     public void getMissingTimeSheetCountForIndiaOffices() throws Exception {
         final List<Map<String, String>> serviceResult =
-                timeSheetService.getMissingTimeSheetCountForIndiaOffices();
+                timeSheetService.getMissingTimeSheetCountForOfficesInCountry("India");
 
         assertEquals(2, serviceResult.size());
 
@@ -90,7 +90,7 @@ public class TimeSheetServiceTest {
         when(peopleCounter.getPeopleCount()).thenReturn(employeeCount);
 
         final List<Map<String, String>> serviceResult =
-                timeSheetService.getMissingTimeSheetPercentagesForIndiaOffices();
+                timeSheetService.getMissingTimeSheetPercentagesForOfficesInCountry("INDIA");
 
         assertEquals(2, serviceResult.size());
 
@@ -106,11 +106,9 @@ public class TimeSheetServiceTest {
     }
 
     @Test
-    public void getMissingTimSheetDataForProjects() throws Exception {
+    public void getMissingTimeSheetForProjectCityWise() throws Exception {
         when(client.getTimeSheetFileForProjectLastWeek()).thenReturn(result);
-        List<Map<String, String>> missingTimeSheetForProjects = timeSheetService.getMissingTimeSheetForProjects();
-        assertEquals(2, missingTimeSheetForProjects.size());
-
-
+        List<Map<String, String>> missingTimeSheet = timeSheetService.getMissingTimeSheetForProjectsForOneCity("Bangalore");
+        assertEquals(1, missingTimeSheet.size());
     }
 }

@@ -27,25 +27,25 @@ public class TimeSheetTrackerControllerTest {
 
     @Test
     public void testTotalTimeSheetMissingData() throws Exception {
-        mockMvc.perform(get("/timeSheetNumberMissing"))
+        mockMvc.perform(get("/India/missingTimeSheetCounts"))
                 .andExpect(status().isOk());
 
-        verify(timeSheetService, times(1)).getMissingTimeSheetCountForIndiaOffices();
+        verify(timeSheetService, times(1)).getMissingTimeSheetCountForOfficesInCountry("India");
     }
 
     @Test
     public void testTimeSheetPercentageMissing() throws Exception {
-        mockMvc.perform(get("/timeSheetPercentageMissing"))
+        mockMvc.perform(get("/India/missingTimeSheetPercentage"))
                 .andExpect(status().isOk());
 
-        verify(timeSheetService, times(1)).getMissingTimeSheetPercentagesForIndiaOffices();
+        verify(timeSheetService, times(1)).getMissingTimeSheetPercentagesForOfficesInCountry("India");
     }
 
     @Test
     public void testMissingTimeSheetForAProject() throws Exception {
-        mockMvc.perform(get("/missingTimeSheetByProjects"))
+        mockMvc.perform(get("/Bangalore/missingTimeSheetByProjects"))
                 .andExpect(status().isOk());
 
-        verify(timeSheetService, times(1)).getMissingTimeSheetForProjects();
+        verify(timeSheetService, times(1)).getMissingTimeSheetForProjectsForOneCity("Bangalore");
     }
 }

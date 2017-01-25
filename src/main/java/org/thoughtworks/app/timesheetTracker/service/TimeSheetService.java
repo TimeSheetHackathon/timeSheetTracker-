@@ -26,39 +26,37 @@ public class TimeSheetService {
     @Autowired
     private PeopleCounter peopleCounter;
 
-    public List<Map<String, String>> getMissingTimeSheetCountForIndiaOffices() {
-        return getIndiaMissingTimeSheet(s3Client.getTimeSheetFileForLastWeek())
+    public List<Map<String, String>> getMissingTimeSheetCountForOfficesInCountry(String country) {
+        return getIndiaMissingTimeSheet(s3Client.getTimeSheetFileForLastWeek(), getMissingTimeSheetsForCountry(country))
                 .entrySet().stream()
-                .map(getEntryMapFunction(x-> valueOf(x.getValue())))
+                .map(getMissingTimeSheetCountMap("workingLocation", x-> valueOf(x.getValue())))
                 .collect(toList());
     }
 
-    public List<Map<String, String>> getMissingTimeSheetPercentagesForIndiaOffices() {
-        return getIndiaMissingTimeSheet(s3Client.getTimeSheetFileForLastWeek())
+    public List<Map<String, String>> getMissingTimeSheetPercentagesForOfficesInCountry(String country) {
+        return getIndiaMissingTimeSheet(s3Client.getTimeSheetFileForLastWeek(), getMissingTimeSheetsForCountry(country))
                 .entrySet().stream()
-                .map(getEntryMapFunction(x-> valueOf(calculatePercentage(x))))
+                .map(getMissingTimeSheetCountMap("workingLocation", x-> valueOf(calculatePercentage(x))))
                 .collect(toList());
     }
 
-    public List<Map<String, String>> getMissingTimeSheetForProjects() {
-         return s3Client.getTimeSheetFileForProjectLastWeek().stream()
-                .collect(partitioningBy(timeSheetEntry -> timeSheetEntry.getCountry().equals("INDIA"),
-                        groupingBy(MissingTimeSheetData::getProjectName, counting())))
-                .get(true)
+    public List<Map<String, String>> getMissingTimeSheetForProjectsForOneCity(String city) {
+
+        return getIndiaMissingTimeSheet(s3Client.getTimeSheetFileForProjectLastWeek(),
+                x-> x.getWorkingLocation().equals(city.toUpperCase()))
                 .entrySet().stream()
-                .map(projectEntry -> Collections.unmodifiableMap(Stream.of(
-                        new SimpleEntry<>("projectName", projectEntry.getKey()),
-                        new SimpleEntry<>("numberOfMissingTimeSheet", valueOf(projectEntry.getValue()))
-                ).collect(Collectors.toMap(
-                        SimpleEntry::getKey,
-                        SimpleEntry::getValue)
-                )))
-         .collect(toList());
+                .map(getMissingTimeSheetCountMap("projectName", x->valueOf(x.getValue())))
+                .collect(toList());
     }
 
-    private Function<Map.Entry<String, Long>, Map<String, String>> getEntryMapFunction(Function<Map.Entry<String, Long>, String> l) {
+    private Function<MissingTimeSheetData, Boolean> getMissingTimeSheetsForCountry(String country) {
+        return x -> x.getCountry().equals(country.toUpperCase());
+    }
+
+    private Function<Map.Entry<String, Long>, Map<String, String>>
+    getMissingTimeSheetCountMap(String key, Function<Map.Entry<String, Long>, String> l) {
         return cityEntry -> Collections.unmodifiableMap(Stream.of(
-                new SimpleEntry<>("workingLocation", cityEntry.getKey()),
+                new SimpleEntry<>(key, cityEntry.getKey()),
                 new SimpleEntry<>("numberOfMissingTimeSheet", l.apply(cityEntry))
                 ).collect(Collectors.toMap(
                 SimpleEntry::getKey,
@@ -67,9 +65,10 @@ public class TimeSheetService {
         );
     }
 
-    private Map<String, Long> getIndiaMissingTimeSheet(List<MissingTimeSheetData> timeSheetFileForLastWeek) {
+    private Map<String, Long> getIndiaMissingTimeSheet(List<MissingTimeSheetData> timeSheetFileForLastWeek,
+                                                       Function<MissingTimeSheetData, Boolean> predicate) {
         return timeSheetFileForLastWeek.stream()
-                .collect(partitioningBy(timeSheetEntry -> timeSheetEntry.getCountry().equals("INDIA"),
+                .collect(partitioningBy(timeSheetEntry -> predicate.apply(timeSheetEntry),
                         groupingBy(MissingTimeSheetData::getWorkingLocation, counting())))
                 .get(true);
     }

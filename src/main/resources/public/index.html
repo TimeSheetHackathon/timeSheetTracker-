@@ -46,7 +46,7 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-d3.request("http://localhost:1234/timeSheetPercentageMissing").get(function(error, r) {
+d3.request("http://localhost:1234/india/missingTimeSheetCounts").get(function(error, r) {
   if (error) throw error;
   var data = JSON.parse(r.response);
 
