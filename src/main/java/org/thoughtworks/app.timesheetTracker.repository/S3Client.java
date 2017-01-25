@@ -29,16 +29,25 @@ public class S3Client {
     private Environment env;
 
     public List<MissingTimeSheetData> getTimeSheetFileForLastWeek() {
+        return fetchFileFromAWS(env.getProperty("cloud.aws.weekly.timesheet.file.prefix"));
+    }
+
+    public List<MissingTimeSheetData> getTimeSheetFileForProjectLastWeek() {
+        return fetchFileFromAWS(env.getProperty("cloud.aws.weekly.project.timeseet.mising.file.prefix"));
+    }
+
+    private List<MissingTimeSheetData> fetchFileFromAWS(String filePrefix) {
         final AmazonS3Client amazonS3Client = new AmazonS3Client(new DefaultAWSCredentialsProviderChain());
 
         final S3Object s3Object = amazonS3Client.getObject(env.getProperty("cloud.aws.timesheet.bucket.name"),
-                                String.format(env.getProperty("cloud.aws.weekly.timesheet.file.prefix"), getPreviousWeek()));
+                                String.format(filePrefix, getPreviousWeek()));
         try {
             return parseEmployeeData(s3Object.getObjectContent());
         } catch (IOException e) {
             return Collections.emptyList();
         }
     }
+
 
     private List<MissingTimeSheetData> parseEmployeeData(InputStream input) throws IOException {
         final ObjectMapper mapper = new ObjectMapper();
@@ -47,9 +56,10 @@ public class S3Client {
                     Map timeSheetDataMap = mapper.convertValue(e, Map.class);
 
                     return MissingTimeSheetData.builder()
-                            .country(valueOf(timeSheetDataMap.get("country")).toUpperCase())
-                            .employeeId(valueOf(timeSheetDataMap.get("id")).toUpperCase())
-                            .workingLocation(valueOf(timeSheetDataMap.get("working-office")).toUpperCase())
+                            .country(valueOf(timeSheetDataMap.getOrDefault("country", "")).toUpperCase())
+                            .employeeId(valueOf(timeSheetDataMap.getOrDefault("id", "")).toUpperCase())
+                            .workingLocation(valueOf(timeSheetDataMap.getOrDefault("working-office", "")).toUpperCase())
+                            .projectName(valueOf(timeSheetDataMap.getOrDefault("project-name", "")).toUpperCase())
                             .build();
                 })
                 .collect(Collectors.toList());
