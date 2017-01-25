@@ -33,12 +33,15 @@
         text-align: center;
     }
 
-    text {
-        font: 10px sans-serif;
-        color: white;
+    .numberOfMissingTimeSheet {
+        z-index: 1;
+        font-size: 80%;
+        fill: white;
     }
-    text .numberOfMissingTimeSheet{
-        font-size: 120%;
+
+    .workingLocation{
+        z-index: 1;
+        font-size: 80%;
         fill: white;
     }
 
@@ -108,8 +111,8 @@
         bar.append("text")
                 .attr("class", "numberOfMissingTimeSheet")
                 .attr("y", barHeight / 2)
-                .attr("dx", -valueMargin + labelWidth) //margin right
-                .attr("dy", ".35em") //vertical align middle
+                .attr("dx", -valueMargin + labelWidth)
+                .attr("dy", ".35em")
                 .attr("text-anchor", "end")
                 .text(function(d){
                     return (d.numberOfMissingTimeSheet+"%");
