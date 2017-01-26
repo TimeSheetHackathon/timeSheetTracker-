@@ -1,5 +1,5 @@
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.10' //we want gradle 2.10 to run this project
+    gradleVersion = '2.10'
 }
 
 buildscript {
@@ -27,9 +27,6 @@ tasks.withType(JavaCompile) {
 
 repositories {
     mavenCentral()
-    maven {
-        url "http://repo.spring.io/libs-release"
-    }
 }
 
 dependencies {
