@@ -1,5 +1,7 @@
 package org.thoughtworks.app.timesheetTracker.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,19 +16,24 @@ public class TimeSheetTrackerController {
     @Autowired
     private TimeSheetService timeSheetService;
 
+    private final static Logger logger = LoggerFactory.getLogger(TimeSheetTrackerController.class);
+
     @RequestMapping("/{country}/missingTimeSheetCounts")
     public List<Map<String, String>> totalTimeSheetNumberMissing(@PathVariable("country") String country) {
+        logger.info(String.format("Getting missing time sheet data for %s", country));
         return timeSheetService.getMissingTimeSheetCountForOfficesInCountry(country);
 
     }
     
     @RequestMapping("/{country}/missingTimeSheetPercentage")
     public List<Map<String, String>> totalTimeSheetPercentageMissing(@PathVariable("country") String country) {
+        logger.info(String.format("Getting missing time sheet percentage data for %s", country));
         return timeSheetService.getMissingTimeSheetPercentagesForOfficesInCountry(country);
     }
 
     @RequestMapping("/{city}/missingTimeSheetByProjects")
     public List<Map<String, String>> missingTimeSheetByProjects(@PathVariable("city") String city) {
+        logger.info(String.format("Getting missing time sheet data for %s", city));
         return timeSheetService.getMissingTimeSheetForProjectsForOneCity(city);
     }
 

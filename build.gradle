@@ -27,7 +27,9 @@ tasks.withType(JavaCompile) {
 
 repositories {
     mavenCentral()
-    maven { url "http://repo.spring.io/libs-release" }
+    maven {
+        url "http://repo.spring.io/libs-release"
+    }
 }
 
 dependencies {
