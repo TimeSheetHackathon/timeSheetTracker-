@@ -6,9 +6,12 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
+import org.thoughtworks.app.timesheetTracker.controller.TimeSheetTrackerController;
 import org.thoughtworks.app.timesheetTracker.models.MissingTimeSheetData;
 
 import java.io.IOException;
@@ -28,6 +31,8 @@ public class S3Client {
     @Autowired
     private Environment env;
 
+    private final static Logger logger = LoggerFactory.getLogger(TimeSheetTrackerController.class);
+
     public List<MissingTimeSheetData> getTimeSheetFileForLastWeek() {
         return fetchFileFromAWS(env.getProperty("cloud.aws.weekly.timesheet.file.prefix"));
     }
@@ -37,6 +42,7 @@ public class S3Client {
     }
 
     private List<MissingTimeSheetData> fetchFileFromAWS(String filePrefix) {
+        logger.info("Fetching file from aws");
         final AmazonS3Client amazonS3Client = new AmazonS3Client(new DefaultAWSCredentialsProviderChain());
 
         final S3Object s3Object = amazonS3Client.getObject(env.getProperty("cloud.aws.timesheet.bucket.name"),
@@ -44,6 +50,8 @@ public class S3Client {
         try {
             return parseEmployeeData(s3Object.getObjectContent());
         } catch (IOException e) {
+            logger.info("Fetching file failed from aws");
+            logger.info(e.getMessage());
             return Collections.emptyList();
         }
     }
