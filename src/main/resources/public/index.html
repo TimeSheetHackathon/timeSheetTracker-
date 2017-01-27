@@ -68,7 +68,7 @@
 <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
 <script src="https://d3js.org/d3-request.v1.min.js"></script>
 <script>
-    d3.request("http://localhost:1234/india/missingTimeSheetCounts").get(function(error, r) {
+    d3.request("http://localhost:1234/india/missingTimeSheetPercentage").get(function(error, r) {
         if (error) throw error;
         data = JSON.parse(r.response);
         svg = d3.select('body')
@@ -85,10 +85,8 @@
                 barPadding = (height-axisMargin-margin*2)*0.6/data.length,
                 data, bar, svg, scale, xAxis, labelWidth = 0;
 
-        max = d3.max(data, function(d) { return d.numberOfMissingTimeSheet; });
-
         scale = d3.scale.linear()
-                .domain([0, max])
+                .domain([10, 110])
                 .range([0, width - margin*2 - labelWidth]);
 
         xAxis = d3.svg.axis()
@@ -105,7 +103,7 @@
                 .attr("transform", "translate("+labelWidth+", 0)")
                 .attr("height", barHeight)
                 .attr("width", function(d){
-                    return scale(d.numberOfMissingTimeSheet);
+                    return scale(100 - d.numberOfMissingTimeSheet);
                 });
 
         bar.append("text")
@@ -115,11 +113,11 @@
                 .attr("dy", ".35em")
                 .attr("text-anchor", "end")
                 .text(function(d){
-                    return (d.numberOfMissingTimeSheet+"%");
+                    return (100 - d.numberOfMissingTimeSheet+"%");
                 })
                 .attr("x", function(d){
                     var width = this.getBBox().width;
-                    return Math.max(width + valueMargin, scale(d.numberOfMissingTimeSheet));
+                    return Math.max(width + valueMargin, scale(100 - d.numberOfMissingTimeSheet));
                 });
 
         bar.attr("class", "bar")
@@ -142,7 +140,7 @@
             div.style("left", d3.event.pageX+10+"px");
             div.style("top", d3.event.pageY-25+"px");
             div.style("display", "inline-block");
-            div.html((d.workingLocation)+"<br>"+(d.numberOfMissingTimeSheet)+"%");
+            div.html((d.workingLocation)+"<br>"+(100 - d.numberOfMissingTimeSheet)+"%");
         });
 
         bar.on("mouseout", function(d){

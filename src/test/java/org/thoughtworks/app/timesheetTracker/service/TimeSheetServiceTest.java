@@ -99,10 +99,10 @@ public class TimeSheetServiceTest {
 
         final List<Map<String, String>> bangalore = splitByCity.get("BANGALORE");
         assertEquals(1, bangalore.size());
-        assertEquals("50", bangalore.get(0).get("numberOfMissingTimeSheet"));
+        assertEquals("50", bangalore.get(0).get("missingTimeSheet"));
 
         final List<Map<String, String>> pune = splitByCity.get("PUNE");
-        assertEquals("25", pune.get(0).get("numberOfMissingTimeSheet"));
+        assertEquals("25", pune.get(0).get("missingTimeSheet"));
     }
 
     @Test

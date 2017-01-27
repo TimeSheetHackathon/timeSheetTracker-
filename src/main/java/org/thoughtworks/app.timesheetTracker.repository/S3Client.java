@@ -49,7 +49,7 @@ public class S3Client {
                                 String.format(filePrefix, getPreviousWeek()));
         try {
             return parseEmployeeData(s3Object.getObjectContent());
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.info("Fetching file failed from aws");
             logger.info(e.getMessage());
             return Collections.emptyList();

@@ -12,11 +12,11 @@ import java.util.stream.Stream;
 public class PeopleCounter {
     private Map<String, Integer> peopleCount = Collections.unmodifiableMap(Stream.of(
             new SimpleEntry<>("BANGALORE", 385),
-            new SimpleEntry<>("GURGAON", 118),
-            new SimpleEntry<>("PUNE", 236),
-            new SimpleEntry<>("CHENNAI", 147),
-            new SimpleEntry<>("HYDERABAD", 121),
-            new SimpleEntry<>("COIMBATORE", 100)
+            new SimpleEntry<>("GURGAON", 136),
+            new SimpleEntry<>("PUNE", 284),
+            new SimpleEntry<>("CHENNAI", 187),
+            new SimpleEntry<>("HYDERABAD", 135),
+            new SimpleEntry<>("COIMBATORE", 15)
     ).collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)));
 
 
