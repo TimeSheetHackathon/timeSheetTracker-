@@ -2,6 +2,8 @@ package org.thoughtworks.app.timesheetTracker.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetCount;
+import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetPercentage;
 import org.thoughtworks.app.timesheetTracker.models.MissingTimeSheetData;
 import org.thoughtworks.app.timesheetTracker.repository.PeopleCounter;
 import org.thoughtworks.app.timesheetTracker.repository.S3Client;
@@ -26,17 +28,23 @@ public class TimeSheetService {
     @Autowired
     private PeopleCounter peopleCounter;
 
-    public List<Map<String, String>> getMissingTimeSheetCountForOfficesInCountry(String country) {
+    public List<MissingTimeSheetCount> getMissingTimeSheetCountForOfficesInCountry(String country) {
         return getIndiaMissingTimeSheet(s3Client.getTimeSheetFileForLastWeek(), getMissingTimeSheetsForCountry(country))
                 .entrySet().stream()
-                .map(getMissingTimeSheetCountMap("workingLocation", x-> valueOf(x.getValue())))
+                .map(cityEntry -> MissingTimeSheetCount.builder()
+                .workingLocation(cityEntry.getKey())
+                .missingTimeSheetCount(valueOf(cityEntry.getValue()))
+                .build())
                 .collect(toList());
     }
 
-    public List<Map<String, String>> getMissingTimeSheetPercentagesForOfficesInCountry(String country) {
+    public List<MissingTimeSheetPercentage> getMissingTimeSheetPercentagesForOfficesInCountry(String country) {
         return getIndiaMissingTimeSheet(s3Client.getTimeSheetFileForLastWeek(), getMissingTimeSheetsForCountry(country))
                 .entrySet().stream()
-                .map(getMissingTimeSheetCountMap("workingLocation", x-> valueOf(calculatePercentage(x))))
+                .map(cityEntry -> MissingTimeSheetPercentage.builder()
+                .workingLocation(cityEntry.getKey())
+                .missingTimeSheetPercentage(valueOf(calculatePercentage(cityEntry)))
+                .build())
                 .collect(toList());
     }
 

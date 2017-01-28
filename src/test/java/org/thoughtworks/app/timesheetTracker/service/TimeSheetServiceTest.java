@@ -6,6 +6,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetCount;
+import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetPercentage;
 import org.thoughtworks.app.timesheetTracker.models.MissingTimeSheetData;
 import org.thoughtworks.app.timesheetTracker.repository.PeopleCounter;
 import org.thoughtworks.app.timesheetTracker.repository.S3Client;
@@ -69,18 +71,19 @@ public class TimeSheetServiceTest {
 
     @Test
     public void getMissingTimeSheetCountForIndiaOffices() throws Exception {
-        final List<Map<String, String>> serviceResult =
+        final List<MissingTimeSheetCount> serviceResult =
                 timeSheetService.getMissingTimeSheetCountForOfficesInCountry("India");
 
         assertEquals(2, serviceResult.size());
 
-        final Map<String, List<Map<String, String>>> splitByCity =
-                serviceResult.stream().collect(groupingBy(e -> e.get("workingLocation")));
 
-        final List<Map<String, String>> bangalore = splitByCity.get("BANGALORE");
+        final Map<String, List<MissingTimeSheetCount>> splitByCity =
+                serviceResult.stream().collect(groupingBy(MissingTimeSheetCount::getWorkingLocation));
+
+        final List<MissingTimeSheetCount> bangalore = splitByCity.get("BANGALORE");
         assertEquals(1, bangalore.size());
 
-        final List<Map<String, String>> pune = splitByCity.get("PUNE");
+        final List<MissingTimeSheetCount> pune = splitByCity.get("PUNE");
         assertEquals(1, pune.size());
 
     }
@@ -89,20 +92,20 @@ public class TimeSheetServiceTest {
     public void getMissingTimeSheetPercentagesForIndiaOffices() throws Exception {
         when(peopleCounter.getPeopleCount()).thenReturn(employeeCount);
 
-        final List<Map<String, String>> serviceResult =
+        final List<MissingTimeSheetPercentage> serviceResult =
                 timeSheetService.getMissingTimeSheetPercentagesForOfficesInCountry("INDIA");
 
         assertEquals(2, serviceResult.size());
 
-        final Map<String, List<Map<String, String>>> splitByCity =
-                serviceResult.stream().collect(groupingBy(e -> e.get("workingLocation")));
+        final Map<String, List<MissingTimeSheetPercentage>> splitByCity =
+                serviceResult.stream().collect(groupingBy(e -> e.getWorkingLocation()));
 
-        final List<Map<String, String>> bangalore = splitByCity.get("BANGALORE");
+        final List<MissingTimeSheetPercentage> bangalore = splitByCity.get("BANGALORE");
         assertEquals(1, bangalore.size());
-        assertEquals("50", bangalore.get(0).get("missingTimeSheet"));
+        assertEquals("50", bangalore.get(0).getMissingTimeSheetPercentage());
 
-        final List<Map<String, String>> pune = splitByCity.get("PUNE");
-        assertEquals("25", pune.get(0).get("missingTimeSheet"));
+        final List<MissingTimeSheetPercentage> pune = splitByCity.get("PUNE");
+        assertEquals("25", pune.get(0).getMissingTimeSheetPercentage());
     }
 
     @Test
