@@ -40,12 +40,4 @@ public class TimeSheetTrackerControllerTest {
 
         verify(timeSheetService, times(1)).getMissingTimeSheetPercentagesForOfficesInCountry("India");
     }
-
-    @Test
-    public void testMissingTimeSheetForAProject() throws Exception {
-        mockMvc.perform(get("/Bangalore/missingTimeSheetByProjects"))
-                .andExpect(status().isOk());
-
-        verify(timeSheetService, times(1)).getMissingTimeSheetForProjectsForOneCity("Bangalore");
-    }
 }

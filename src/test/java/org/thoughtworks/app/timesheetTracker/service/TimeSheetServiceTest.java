@@ -107,11 +107,4 @@ public class TimeSheetServiceTest {
         final List<MissingTimeSheetPercentage> pune = splitByCity.get("PUNE");
         assertEquals("25", pune.get(0).getMissingTimeSheetPercentage());
     }
-
-    @Test
-    public void getMissingTimeSheetForProjectCityWise() throws Exception {
-        when(client.getTimeSheetFileForProjectLastWeek()).thenReturn(result);
-        List<Map<String, String>> missingTimeSheet = timeSheetService.getMissingTimeSheetForProjectsForOneCity("Bangalore");
-        assertEquals(1, missingTimeSheet.size());
-    }
 }

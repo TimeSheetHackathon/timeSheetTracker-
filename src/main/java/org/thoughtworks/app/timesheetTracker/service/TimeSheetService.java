@@ -8,13 +8,9 @@ import org.thoughtworks.app.timesheetTracker.models.MissingTimeSheetData;
 import org.thoughtworks.app.timesheetTracker.repository.PeopleCounter;
 import org.thoughtworks.app.timesheetTracker.repository.S3Client;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.lang.String.valueOf;
 import static java.util.stream.Collectors.*;
@@ -29,7 +25,7 @@ public class TimeSheetService {
     private PeopleCounter peopleCounter;
 
     public List<MissingTimeSheetCount> getMissingTimeSheetCountForOfficesInCountry(String country) {
-        return getIndiaMissingTimeSheet(s3Client.getTimeSheetFileForLastWeek(), getMissingTimeSheetsForCountry(country))
+        return getMissingTimeSheetForCountry(s3Client.getTimeSheetFileForLastWeek(), country)
                 .entrySet().stream()
                 .map(cityEntry -> MissingTimeSheetCount.builder()
                 .workingLocation(cityEntry.getKey())
@@ -39,7 +35,7 @@ public class TimeSheetService {
     }
 
     public List<MissingTimeSheetPercentage> getMissingTimeSheetPercentagesForOfficesInCountry(String country) {
-        return getIndiaMissingTimeSheet(s3Client.getTimeSheetFileForLastWeek(), getMissingTimeSheetsForCountry(country))
+        return getMissingTimeSheetForCountry(s3Client.getTimeSheetFileForLastWeek(), country)
                 .entrySet().stream()
                 .map(cityEntry -> MissingTimeSheetPercentage.builder()
                 .workingLocation(cityEntry.getKey())
@@ -48,35 +44,10 @@ public class TimeSheetService {
                 .collect(toList());
     }
 
-    public List<Map<String, String>> getMissingTimeSheetForProjectsForOneCity(String city) {
-
-        return getIndiaMissingTimeSheet(s3Client.getTimeSheetFileForProjectLastWeek(),
-                x-> x.getWorkingLocation().equals(city.toUpperCase()))
-                .entrySet().stream()
-                .map(getMissingTimeSheetCountMap("projectName", x->valueOf(x.getValue())))
-                .collect(toList());
-    }
-
-    private Function<MissingTimeSheetData, Boolean> getMissingTimeSheetsForCountry(String country) {
-        return x -> x.getCountry().equals(country.toUpperCase());
-    }
-
-    private Function<Map.Entry<String, Long>, Map<String, String>>
-    getMissingTimeSheetCountMap(String key, Function<Map.Entry<String, Long>, String> l) {
-        return cityEntry -> Collections.unmodifiableMap(Stream.of(
-                new SimpleEntry<>(key, cityEntry.getKey()),
-                new SimpleEntry<>("missingTimeSheet", l.apply(cityEntry))
-                ).collect(Collectors.toMap(
-                SimpleEntry::getKey,
-                SimpleEntry::getValue)
-                )
-        );
-    }
-
-    private Map<String, Long> getIndiaMissingTimeSheet(List<MissingTimeSheetData> timeSheetFileForLastWeek,
-                                                       Function<MissingTimeSheetData, Boolean> predicate) {
+    private Map<String, Long> getMissingTimeSheetForCountry(List<MissingTimeSheetData> timeSheetFileForLastWeek,
+                                                       String country) {
         return timeSheetFileForLastWeek.stream()
-                .collect(partitioningBy(timeSheetEntry -> predicate.apply(timeSheetEntry),
+                .collect(partitioningBy(timeSheetEntry ->  timeSheetEntry.getCountry().equals(country.toUpperCase()),
                         groupingBy(MissingTimeSheetData::getWorkingLocation, counting())))
                 .get(true);
     }
