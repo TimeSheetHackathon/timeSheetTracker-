@@ -4,6 +4,7 @@ package org.thoughtworks.app.timesheetTracker.controller;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.filter.TypeExcludeFilters;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -30,7 +31,8 @@ public class TimeSheetTrackerControllerTest {
         mockMvc.perform(get("/India/missingTimeSheetCounts"))
                 .andExpect(status().isOk());
 
-        verify(timeSheetService, times(1)).getMissingTimeSheetCountForOfficesInCountry("India");
+        verify(timeSheetService, times(1))
+                .getMissingTimeSheetCountForOfficesInCountry("India");
     }
 
     @Test
@@ -38,6 +40,16 @@ public class TimeSheetTrackerControllerTest {
         mockMvc.perform(get("/India/missingTimeSheetPercentage"))
                 .andExpect(status().isOk());
 
-        verify(timeSheetService, times(1)).getMissingTimeSheetPercentagesForOfficesInCountry("India");
+        verify(timeSheetService, times(1))
+                .getMissingTimeSheetPercentagesForOfficesInCountry("India");
+    }
+
+    @Test
+    public void testTimeSheetMissingByProjects() throws Exception {
+        mockMvc.perform(get("/Banglore/missingTimeSheetByProjects"))
+                .andExpect(status().isOk());
+
+        verify(timeSheetService, times(1))
+                .getMissingTimeSheetForProjectsForOneCity("Banglore");
     }
 }

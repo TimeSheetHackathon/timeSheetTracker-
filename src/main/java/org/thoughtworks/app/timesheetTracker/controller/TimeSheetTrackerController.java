@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetCount;
+import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetCountForProject;
 import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetPercentage;
 import org.thoughtworks.app.timesheetTracker.service.TimeSheetService;
 
@@ -31,5 +32,12 @@ public class TimeSheetTrackerController {
         logger.info(String.format("Getting missing time sheet percentage data for %s", country));
         return timeSheetService.getMissingTimeSheetPercentagesForOfficesInCountry(country);
     }
+
+    @RequestMapping("/{city}/missingTimeSheetByProjects")
+    public List<MissingTimeSheetCountForProject> missingTimeSheetByProjects(@PathVariable("city") String city) {
+        logger.info(String.format("Getting missing time sheet data for %s", city));
+        return timeSheetService.getMissingTimeSheetForProjectsForOneCity(city);
+    }
+
 
 }

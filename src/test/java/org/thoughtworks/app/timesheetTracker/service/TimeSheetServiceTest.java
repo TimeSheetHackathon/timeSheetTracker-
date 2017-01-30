@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetCount;
+import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetCountForProject;
 import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetPercentage;
 import org.thoughtworks.app.timesheetTracker.models.MissingTimeSheetData;
 import org.thoughtworks.app.timesheetTracker.repository.PeopleCounter;
@@ -70,7 +71,7 @@ public class TimeSheetServiceTest {
     }
 
     @Test
-    public void getMissingTimeSheetCountForIndiaOffices() throws Exception {
+    public void testGetMissingTimeSheetCountForIndiaOffices() throws Exception {
         final List<MissingTimeSheetCount> serviceResult =
                 timeSheetService.getMissingTimeSheetCountForOfficesInCountry("India");
 
@@ -89,7 +90,7 @@ public class TimeSheetServiceTest {
     }
 
     @Test
-    public void getMissingTimeSheetPercentagesForIndiaOffices() throws Exception {
+    public void testGetMissingTimeSheetPercentagesForIndiaOffices() throws Exception {
         when(peopleCounter.getPeopleCount()).thenReturn(employeeCount);
 
         final List<MissingTimeSheetPercentage> serviceResult =
@@ -106,5 +107,16 @@ public class TimeSheetServiceTest {
 
         final List<MissingTimeSheetPercentage> pune = splitByCity.get("PUNE");
         assertEquals("25", pune.get(0).getMissingTimeSheetPercentage());
+    }
+
+    @Test
+    public void testGetMissingTimeSheetForProjectsForOneCity() throws Exception {
+       when(client.getTimeSheetFileForProjectLastWeek()).thenReturn(result);
+        final List<MissingTimeSheetCountForProject> bangalore = timeSheetService
+                .getMissingTimeSheetForProjectsForOneCity("Bangalore");
+
+        assertEquals(1, bangalore.size());
+        assertEquals("KROGER",bangalore.get(0).getProjectName());
+        assertEquals(new Long(1), bangalore.get(0).getMissingTimeSheetCount());
     }
 }
