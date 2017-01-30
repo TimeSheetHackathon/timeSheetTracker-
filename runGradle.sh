@@ -1,4 +1,5 @@
 #!/bin/bash
 # My first script
 
-gradle bootRun > server.log &
+gradle bootRun > server.log 2>&1 &
+exit 0
