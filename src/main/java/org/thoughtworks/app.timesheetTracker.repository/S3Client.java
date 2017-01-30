@@ -1,6 +1,5 @@
 package org.thoughtworks.app.timesheetTracker.repository;
 
-import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.S3Object;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +30,9 @@ public class S3Client {
     @Autowired
     private Environment env;
 
+    @Autowired
+    private AmazonS3Client amazonS3Client;
+
     private final static Logger logger = LoggerFactory.getLogger(TimeSheetTrackerController.class);
 
     public List<MissingTimeSheetData> getTimeSheetFileForLastWeek() {
@@ -43,7 +45,6 @@ public class S3Client {
 
     private List<MissingTimeSheetData> fetchFileFromAWS(String filePrefix) {
         logger.info("Fetching file from aws");
-        final AmazonS3Client amazonS3Client = new AmazonS3Client(new DefaultAWSCredentialsProviderChain());
 
         final S3Object s3Object = amazonS3Client.getObject(env.getProperty("cloud.aws.timesheet.bucket.name"),
                                 String.format(filePrefix, getPreviousWeek()));
