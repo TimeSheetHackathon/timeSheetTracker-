@@ -100,7 +100,7 @@ public class TimeSheetService {
                 .filter(timeSheetData -> timeSheetData.getWorkingLocation().equals(city.toUpperCase()))
                 .map(timeSheetData -> Employee.builder()
                         .name(timeSheetData.getEmployeeName())
-                        .id(timeSheetData.getEmployeeId())
+                        .id(new Integer(timeSheetData.getEmployeeId()))
                         .build())
                 .distinct()
                 .collect(toList());

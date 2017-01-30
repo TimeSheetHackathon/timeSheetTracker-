@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.omg.CORBA._IDLTypeStub;
 import org.thoughtworks.app.timesheetTracker.contract.Employee;
 import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetCount;
 import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetCountForProject;
@@ -35,7 +36,7 @@ public class TimeSheetServiceTest {
     @InjectMocks
     private TimeSheetService timeSheetService;
 
-    private List<MissingTimeSheetData> result;
+    private List<MissingTimeSheetData> result,duplicateData, differentIdEmployees;
     private Map employeeCount;
 
     @Before
@@ -72,6 +73,55 @@ public class TimeSheetServiceTest {
                 new AbstractMap.SimpleEntry<>("HYDERABAD", 1)
         ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)));
         when(client.getTimeSheetFileForLastWeek()).thenReturn(result);
+
+
+        duplicateData = Arrays.asList(
+                MissingTimeSheetData.builder()
+                        .employeeId("1")
+                        .employeeName("M,Gayathri")
+                        .country("INDIA")
+                        .workingLocation("BANGALORE")
+                        .projectName("KROGER")
+                        .build(),
+                MissingTimeSheetData.builder()
+                        .employeeId("2")
+                        .employeeName("Sharma,Nishkarsh")
+                        .country("INDIA")
+                        .workingLocation("PUNE")
+                        .projectName("DELTA")
+                        .build(),
+                MissingTimeSheetData.builder()
+                        .employeeId("1")
+                        .employeeName("M,Gayathri")
+                        .country("INDIA")
+                        .workingLocation("BANGALORE")
+                        .projectName("KROGER")
+                        .build()
+        );
+
+        differentIdEmployees = Arrays.asList(
+                MissingTimeSheetData.builder()
+                        .employeeId("1")
+                        .employeeName("M,Gayathri")
+                        .country("INDIA")
+                        .workingLocation("BANGALORE")
+                        .projectName("KROGER")
+                        .build(),
+                MissingTimeSheetData.builder()
+                        .employeeId("2")
+                        .employeeName("Sharma,Nishkarsh")
+                        .country("INDIA")
+                        .workingLocation("PUNE")
+                        .projectName("DELTA")
+                        .build(),
+                MissingTimeSheetData.builder()
+                        .employeeId("3")
+                        .employeeName("M,Gayathri")
+                        .country("INDIA")
+                        .workingLocation("BANGALORE")
+                        .projectName("KROGER")
+                        .build()
+        );
     }
 
     @Test
@@ -138,5 +188,28 @@ public class TimeSheetServiceTest {
         List<Employee> employeesNames = timeSheetService.getEmployeesNamesForACity("Bangalore");
         assertEquals(1, employeesNames.size());
         assertEquals("M,Gayathri",employeesNames.get(0).getName());
+        assertEquals(new Integer(1), employeesNames.get(0).getId());
+    }
+
+    @Test
+    public void shouldReturnUniqueEmployeesNamesForACity() throws Exception {
+        when(client.getTimeSheetFileForProjectLastWeek()).thenReturn(duplicateData);
+        List<Employee> employeesNames = timeSheetService.getEmployeesNamesForACity("Bangalore");
+        assertEquals(1,employeesNames.size());
+        assertEquals("M,Gayathri",employeesNames.get(0).getName());
+        assertEquals(new Integer(1), employeesNames.get(0).getId());
+    }
+
+    @Test
+    public void shouldReturnSameEmployeesNamesWhenEmployeesHaveDifferentId() throws Exception {
+        when(client.getTimeSheetFileForProjectLastWeek()).thenReturn(differentIdEmployees);
+        List<Employee> employeesNames = timeSheetService.getEmployeesNamesForACity("Bangalore");
+        assertEquals(2, employeesNames.size());
+        assertEquals("M,Gayathri",employeesNames.get(0).getName());
+        assertEquals(new Integer(1), employeesNames.get(0).getId());
+
+        assertEquals("M,Gayathri", employeesNames.get(1).getName());
+        assertEquals(new Integer(3), employeesNames.get(1).getId());
+
     }
 }
