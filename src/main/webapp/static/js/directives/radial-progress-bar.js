@@ -45,7 +45,7 @@ app.directive("radial", function($parse){
                 var border = 15;
                 var padding = 30;
                 var startPercent = 0;
-                var endPercent = (100 - scope.data[i].missingTimeSheetPercentage - 50)/100;
+                var endPercent = (100 - scope.data[i].missingTimeSheetPercentage)/100;
 
 
                 var twoPi = Math.PI * 2;
