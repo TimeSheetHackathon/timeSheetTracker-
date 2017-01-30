@@ -2,6 +2,7 @@ package org.thoughtworks.app.timesheetTracker.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.thoughtworks.app.timesheetTracker.contract.Employee;
 import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetCount;
 import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetCountForProject;
 import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetPercentage;
@@ -94,10 +95,14 @@ public class TimeSheetService {
         return cityEntry.getValue().intValue() * 100 / peopleCounter.getPeopleCount().get(cityEntry.getKey());
     }
 
-    public List<String> getEmployeesNamesForACity(String city) {
+    public List<Employee> getEmployeesNamesForACity(String city) {
         return s3Client.getTimeSheetFileForProjectLastWeek().stream()
                 .filter(timeSheetData -> timeSheetData.getWorkingLocation().equals(city.toUpperCase()))
-                .map(timeSheetData -> timeSheetData.getEmployeeName())
+                .map(timeSheetData -> Employee.builder()
+                        .name(timeSheetData.getEmployeeName())
+                        .id(timeSheetData.getEmployeeId())
+                        .build())
+                .distinct()
                 .collect(toList());
     }
 }

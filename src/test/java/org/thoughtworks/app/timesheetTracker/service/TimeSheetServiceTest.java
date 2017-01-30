@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.thoughtworks.app.timesheetTracker.contract.Employee;
 import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetCount;
 import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetCountForProject;
 import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetPercentage;
@@ -134,8 +135,8 @@ public class TimeSheetServiceTest {
     @Test
     public void testGetEmployeesNamesForACity() throws Exception {
         when(client.getTimeSheetFileForProjectLastWeek()).thenReturn(result);
-        List<String> employeesNames = timeSheetService.getEmployeesNamesForACity("Bangalore");
+        List<Employee> employeesNames = timeSheetService.getEmployeesNamesForACity("Bangalore");
         assertEquals(1, employeesNames.size());
-        assertEquals("M,Gayathri",employeesNames.get(0));
+        assertEquals("M,Gayathri",employeesNames.get(0).getName());
     }
 }

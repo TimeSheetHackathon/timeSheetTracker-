@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.thoughtworks.app.timesheetTracker.contract.Employee;
 import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetCount;
 import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetCountForProject;
 import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetPercentage;
@@ -47,7 +48,7 @@ public class TimeSheetTrackerController {
     }
 
     @RequestMapping("/city/{city}")
-    public List<String> peopleForACity(@PathVariable("city") String city) {
+    public List<Employee> peopleForACity(@PathVariable("city") String city) {
         logger.info(String.format("Getting name of people who missed time sheet in %s", city));
         return timeSheetService.getEmployeesNamesForACity(city);
     }
