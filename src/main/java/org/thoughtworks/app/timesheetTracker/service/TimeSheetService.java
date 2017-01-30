@@ -45,8 +45,9 @@ public class TimeSheetService {
                 .entrySet().stream()
                 .map(cityEntry -> MissingTimeSheetPercentage.builder()
                         .workingLocation(cityEntry.getKey())
-                        .missingTimeSheetPercentage(valueOf(calculatePercentage(cityEntry)))
+                        .missingTimeSheetPercentage(calculatePercentage(cityEntry))
                         .build())
+                .sorted((x, y) -> Integer.compare(x.getMissingTimeSheetPercentage(), y.getMissingTimeSheetPercentage()))
                 .collect(toList());
     }
 

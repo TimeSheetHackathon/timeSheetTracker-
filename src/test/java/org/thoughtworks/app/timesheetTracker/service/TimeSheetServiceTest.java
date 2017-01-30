@@ -103,10 +103,10 @@ public class TimeSheetServiceTest {
 
         final List<MissingTimeSheetPercentage> bangalore = splitByCity.get("BANGALORE");
         assertEquals(1, bangalore.size());
-        assertEquals("50", bangalore.get(0).getMissingTimeSheetPercentage());
+        assertEquals(Integer.valueOf(50), bangalore.get(0).getMissingTimeSheetPercentage());
 
         final List<MissingTimeSheetPercentage> pune = splitByCity.get("PUNE");
-        assertEquals("25", pune.get(0).getMissingTimeSheetPercentage());
+        assertEquals(Integer.valueOf(25), pune.get(0).getMissingTimeSheetPercentage());
     }
 
     @Test

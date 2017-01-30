@@ -7,5 +7,5 @@ import lombok.Data;
 @Builder
 public class MissingTimeSheetPercentage {
     private String workingLocation;
-    private String missingTimeSheetPercentage;
+    private Integer missingTimeSheetPercentage;
 }
