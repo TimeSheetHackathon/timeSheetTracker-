@@ -65,10 +65,6 @@ public class TimeSheetService {
                 .collect(toList());
     }
 
-    private Function<MissingTimeSheetData, Boolean> matchCountry(String country) {
-        return timeSheetEntry -> timeSheetEntry.getCountry().equals(country.toUpperCase());
-    }
-
     public List<String> getEmployeesNamesForAProject(String city,String project){
        return s3Client.getTimeSheetFileForProjectLastWeek().stream()
                .filter(timeSheetData -> timeSheetData.getWorkingLocation().equals(city.toUpperCase()) &&
@@ -79,6 +75,10 @@ public class TimeSheetService {
 
     private Function<MissingTimeSheetData, Boolean> matchCity(String city) {
         return timeSheetEntry -> timeSheetEntry.getWorkingLocation().equals(city.toUpperCase());
+    }
+
+    private Function<MissingTimeSheetData, Boolean> matchCountry(String country) {
+        return timeSheetEntry -> timeSheetEntry.getCountry().equals(country.toUpperCase());
     }
 
     private Map<String, Long> getMissingTimeSheet(List<MissingTimeSheetData> timeSheetFileForLastWeek,
@@ -94,6 +94,11 @@ public class TimeSheetService {
         return cityEntry.getValue().intValue() * 100 / peopleCounter.getPeopleCount().get(cityEntry.getKey());
     }
 
-
+    public List<String> getEmployeesNamesForACity(String city) {
+        return s3Client.getTimeSheetFileForProjectLastWeek().stream()
+                .filter(timeSheetData -> timeSheetData.getWorkingLocation().equals(city.toUpperCase()))
+                .map(timeSheetData -> timeSheetData.getEmployeeName())
+                .collect(toList());
+    }
 }
 

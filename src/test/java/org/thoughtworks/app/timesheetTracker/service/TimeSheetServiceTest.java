@@ -130,4 +130,12 @@ public class TimeSheetServiceTest {
         assertEquals(1, employeesNames.size());
         assertEquals("M,Gayathri",employeesNames.get(0));
     }
+
+    @Test
+    public void testGetEmployeesNamesForACity() throws Exception {
+        when(client.getTimeSheetFileForProjectLastWeek()).thenReturn(result);
+        List<String> employeesNames = timeSheetService.getEmployeesNamesForACity("Bangalore");
+        assertEquals(1, employeesNames.size());
+        assertEquals("M,Gayathri",employeesNames.get(0));
+    }
 }
