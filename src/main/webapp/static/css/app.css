@@ -3,3 +3,12 @@
     font-size: 24px;
     font-weight: bold;
 }
+
+.left-panel {
+    padding-right:20px;
+    border-right: 1px solid #ccc;"
+}
+
+.right-panel {
+    padding-left:20px;
+}

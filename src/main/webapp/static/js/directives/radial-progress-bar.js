@@ -30,16 +30,7 @@ app.directive("radial", function($parse){
         replace: false,
         scope: {data: '=chartData'},
         link: function(scope, element, attrs){
-            var colors = {
-                'pink': '#E1499A',
-                'yellow': '#f0ff08',
-                'green': '#44e4ee'
-            };
-
-            var color = colors.green;
-
-            console.log(scope.data);
-
+            
             for (var i = 0; i < scope.data.length; i++) {
                 var radius = 75;
                 var border = 15;
