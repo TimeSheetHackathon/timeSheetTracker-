@@ -25,7 +25,8 @@ import static java.lang.String.valueOf;
 
 
 @Repository
-public class S3Client {
+public class
+S3Client {
 
     @Autowired
     private Environment env;
@@ -69,6 +70,7 @@ public class S3Client {
                             .employeeId(valueOf(timeSheetDataMap.getOrDefault("id", "")).toUpperCase())
                             .workingLocation(valueOf(timeSheetDataMap.getOrDefault("working-office", "")).toUpperCase())
                             .projectName(valueOf(timeSheetDataMap.getOrDefault("project-name", "")).toUpperCase())
+                            .employeeName(valueOf(timeSheetDataMap.getOrDefault("name","")))
                             .build();
                 })
                 .collect(Collectors.toList());

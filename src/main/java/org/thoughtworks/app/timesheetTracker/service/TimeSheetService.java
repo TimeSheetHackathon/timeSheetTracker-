@@ -9,6 +9,7 @@ import org.thoughtworks.app.timesheetTracker.models.MissingTimeSheetData;
 import org.thoughtworks.app.timesheetTracker.repository.PeopleCounter;
 import org.thoughtworks.app.timesheetTracker.repository.S3Client;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -47,7 +48,7 @@ public class TimeSheetService {
                         .workingLocation(cityEntry.getKey())
                         .missingTimeSheetPercentage(calculatePercentage(cityEntry))
                         .build())
-                .sorted((x, y) -> Integer.compare(x.getMissingTimeSheetPercentage(), y.getMissingTimeSheetPercentage()))
+                .sorted(Comparator.comparingInt(MissingTimeSheetPercentage::getMissingTimeSheetPercentage))
                 .collect(toList());
     }
 
@@ -68,6 +69,14 @@ public class TimeSheetService {
         return timeSheetEntry -> timeSheetEntry.getCountry().equals(country.toUpperCase());
     }
 
+    public List<String> getEmployeesNamesForAProject(String city,String project){
+       return s3Client.getTimeSheetFileForProjectLastWeek().stream()
+               .filter(timeSheetData -> timeSheetData.getWorkingLocation().equals(city.toUpperCase()) &&
+               timeSheetData.getProjectName().equals(project.toUpperCase()))
+               .map(MissingTimeSheetData::getEmployeeName)
+               .collect(toList());
+    }
+
     private Function<MissingTimeSheetData, Boolean> matchCity(String city) {
         return timeSheetEntry -> timeSheetEntry.getWorkingLocation().equals(city.toUpperCase());
     }
@@ -84,5 +93,7 @@ public class TimeSheetService {
     private int calculatePercentage(Map.Entry<String, Long> cityEntry) {
         return cityEntry.getValue().intValue() * 100 / peopleCounter.getPeopleCount().get(cityEntry.getKey());
     }
+
+
 }
 

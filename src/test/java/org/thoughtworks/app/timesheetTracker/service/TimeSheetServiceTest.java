@@ -42,18 +42,21 @@ public class TimeSheetServiceTest {
         result = Arrays.asList(
                 MissingTimeSheetData.builder()
                         .employeeId("1")
+                        .employeeName("M,Gayathri")
                         .country("INDIA")
                         .workingLocation("BANGALORE")
                         .projectName("KROGER")
                         .build(),
                 MissingTimeSheetData.builder()
                         .employeeId("2")
+                        .employeeName("Sharma,Nishkarsh")
                         .country("INDIA")
                         .workingLocation("PUNE")
                         .projectName("DELTA")
                         .build(),
                 MissingTimeSheetData.builder()
                         .employeeId("3")
+                        .employeeName("Sao Paulo")
                         .country("US")
                         .workingLocation("sf")
                         .projectName("Cricket")
@@ -118,5 +121,13 @@ public class TimeSheetServiceTest {
         assertEquals(1, bangalore.size());
         assertEquals("KROGER",bangalore.get(0).getProjectName());
         assertEquals(new Long(1), bangalore.get(0).getMissingTimeSheetCount());
+    }
+
+    @Test
+    public void testGetEmployeesNamesForAProject() throws Exception {
+        when(client.getTimeSheetFileForProjectLastWeek()).thenReturn(result);
+        List<String> employeesNames = timeSheetService.getEmployeesNamesForAProject("Bangalore", "Kroger");
+        assertEquals(1, employeesNames.size());
+        assertEquals("M,Gayathri",employeesNames.get(0));
     }
 }

@@ -11,6 +11,7 @@ import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetCountForPr
 import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetPercentage;
 import org.thoughtworks.app.timesheetTracker.service.TimeSheetService;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -39,5 +40,11 @@ public class TimeSheetTrackerController {
         return timeSheetService.getMissingTimeSheetForProjectsForOneCity(city);
     }
 
+    @RequestMapping("/city/{city}/project/{project}/missingTimeSheetByEmployees")
+    public List<String> missingTimeSheetByEmployees(
+            @PathVariable("city") String city, @PathVariable("project") String project) {
+        logger.info(String.format("Getting missing time sheet data for city %s and project %s", city, project));
+        return timeSheetService.getEmployeesNamesForAProject(city, project);
+    }
 
 }

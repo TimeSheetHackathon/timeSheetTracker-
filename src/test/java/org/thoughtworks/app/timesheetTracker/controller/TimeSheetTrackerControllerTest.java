@@ -52,4 +52,14 @@ public class TimeSheetTrackerControllerTest {
         verify(timeSheetService, times(1))
                 .getMissingTimeSheetForProjectsForOneCity("Banglore");
     }
+
+    @Test
+    public void testTimeSheetMissingByEmployeesNames() throws Exception {
+        mockMvc.perform(get("/city/Bangalore/project/Kroger/missingTimeSheetByEmployees"))
+                .andExpect(status().isOk());
+
+        verify(timeSheetService, times(1))
+                .getEmployeesNamesForAProject("Bangalore","Kroger");
+
+    }
 }
