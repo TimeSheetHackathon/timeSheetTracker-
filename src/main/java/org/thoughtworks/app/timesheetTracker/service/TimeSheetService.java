@@ -80,7 +80,6 @@ public class TimeSheetService {
                 .get(true);
     }
 
-
     private int calculatePercentage(Map.Entry<String, Long> cityEntry) {
         return cityEntry.getValue().intValue() * 100 / peopleCounter.getPeopleCount().get(cityEntry.getKey());
     }

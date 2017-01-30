@@ -39,7 +39,7 @@ public class S3ClientTest {
 
 
     @Test
-    public void name() throws Exception {
+    public void testS3ClientGetTimeSheetFileForLastWeek() throws Exception {
 
         InputStream targetStream = this.getClass().getClassLoader().getResourceAsStream("aws.json");
 
