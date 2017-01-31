@@ -1,14 +1,67 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700");
+
+html{
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
 .progress-meter text {
-    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 24px;
-    font-weight: bold;
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    font-weight: 300;
 }
 
 .left-panel {
+    padding-top: 20px;
     padding-right:20px;
     border-right: 1px solid #ccc;"
 }
 
 .right-panel {
+    padding-top: 20px;
     padding-left:20px;
+}
+
+.def-element {
+    display: block;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 20px;
+    font-size: x-large;
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    border-bottom: 1px solid #ccc;
+    font-weight: 300;
+    text-align:center;
+}
+
+.carousel-indicators .active {
+    background-color: #868686;
+}
+.carousel-indicators li {
+    background-color: #c3c3c3;
+}
+
+#defaulterCarousel {
+    padding-bottom: 50px;
+}
+.panel-title{
+    text-align:center;
+}
+.panel-title b{
+    font-weight: 300;
+    color: rgb(0, 140, 186)
+
+}
+
+.carousel-item .grid {
+    padding-left: 38px;
+}
+
+.navbar-brand {
+    text-align: center;
+    font-weight: 300;
+}
+
+#stat-area {
+    padding-left: 50px;
 }

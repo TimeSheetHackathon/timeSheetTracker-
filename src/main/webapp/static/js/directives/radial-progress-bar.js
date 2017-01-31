@@ -30,7 +30,8 @@ app.directive("radial", function($parse){
         replace: false,
         scope: {data: '=chartData'},
         link: function(scope, element, attrs){
-            
+            percentColors[1].pct = (100 - scope.data[scope.data.length - 1].missingTimeSheetPercentage)/100;
+
             for (var i = 0; i < scope.data.length; i++) {
                 var radius = 75;
                 var border = 15;
