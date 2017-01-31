@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static java.lang.String.valueOf;
 import static java.util.stream.Collectors.*;
@@ -74,19 +75,30 @@ public class TimeSheetService {
                .collect(toList());
     }
 
-    private Function<MissingTimeSheetData, Boolean> matchCity(String city) {
+    public List<Employee> getEmployeesNamesForACity(String city) {
+        return s3Client.getTimeSheetFileForProjectLastWeek().stream()
+                .filter(matchCity(city))
+                .map(timeSheetData -> Employee.builder()
+                        .name(timeSheetData.getEmployeeName())
+                        .id(new Integer(timeSheetData.getEmployeeId()))
+                        .build())
+                .distinct()
+                .collect(toList());
+    }
+
+    private Predicate<MissingTimeSheetData> matchCity(String city) {
         return timeSheetEntry -> timeSheetEntry.getWorkingLocation().equals(city.toUpperCase());
     }
 
-    private Function<MissingTimeSheetData, Boolean> matchCountry(String country) {
+    private Predicate<MissingTimeSheetData> matchCountry(String country) {
         return timeSheetEntry -> timeSheetEntry.getCountry().equals(country.toUpperCase());
     }
 
     private Map<String, Long> getMissingTimeSheet(List<MissingTimeSheetData> timeSheetFileForLastWeek,
-                                                  Function<MissingTimeSheetData, Boolean> predicate,
+                                                  Predicate<MissingTimeSheetData> predicate,
                                                   Function<MissingTimeSheetData, String> classifier) {
         return timeSheetFileForLastWeek.stream()
-                .collect(partitioningBy(predicate::apply,
+                .collect(partitioningBy(predicate::test,
                         groupingBy(classifier, counting())))
                 .get(true);
     }
@@ -95,15 +107,6 @@ public class TimeSheetService {
         return cityEntry.getValue().intValue() * 100 / peopleCounter.getPeopleCount().get(cityEntry.getKey());
     }
 
-    public List<Employee> getEmployeesNamesForACity(String city) {
-        return s3Client.getTimeSheetFileForProjectLastWeek().stream()
-                .filter(timeSheetData -> timeSheetData.getWorkingLocation().equals(city.toUpperCase()))
-                .map(timeSheetData -> Employee.builder()
-                        .name(timeSheetData.getEmployeeName())
-                        .id(new Integer(timeSheetData.getEmployeeId()))
-                        .build())
-                .distinct()
-                .collect(toList());
-    }
+
 }
 
