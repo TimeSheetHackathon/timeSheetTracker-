@@ -102,15 +102,15 @@ public class TimeSheetService {
                                                   Predicate<MissingTimeSheetData> predicate,
                                                   Function<MissingTimeSheetData, String> classifier) {
         return timeSheetFileForLastWeek.stream()
-                .collect(partitioningBy(predicate::test,
+                .collect(partitioningBy(predicate,
                         groupingBy(classifier, counting())))
                 .get(true);
     }
 
-    private int calculatePercentage(Map<String, Long> cityWithMissingTimeSheetCount, String city) {
+    private Integer calculatePercentage(Map<String, Long> cityWithMissingTimeSheetCount, String city) {
         Long missingTimeSheetCount = cityWithMissingTimeSheetCount.get(city);
-        return missingTimeSheetCount == null ?0 :
-                (int) (+missingTimeSheetCount * 100 / peopleCounter.getPeopleCount().get(city));
+        return missingTimeSheetCount == null ? 0 :
+                 Math.toIntExact(missingTimeSheetCount) * 100 / peopleCounter.getPeopleCount().get(city);
     }
 
 
