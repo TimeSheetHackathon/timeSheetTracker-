@@ -109,7 +109,7 @@ public class TimeSheetService {
 
     private int calculatePercentage(Map<String, Long> cityWithMissingTimeSheetCount, String city) {
         Long missingTimeSheetCount = cityWithMissingTimeSheetCount.get(city);
-        return missingTimeSheetCount == null ?      0 :
+        return missingTimeSheetCount == null ?0 :
                 (int) (+missingTimeSheetCount * 100 / peopleCounter.getPeopleCount().get(city));
     }
 

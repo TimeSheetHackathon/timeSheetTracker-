@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
 import org.thoughtworks.app.timesheetTracker.controller.TimeSheetTrackerController;
@@ -25,6 +26,7 @@ import static java.lang.String.valueOf;
 
 
 @Repository
+
 public class
 S3Client {
 
@@ -36,10 +38,12 @@ S3Client {
 
     private final static Logger logger = LoggerFactory.getLogger(TimeSheetTrackerController.class);
 
+    @Cacheable("timeSheetFileForLastWeek")
     public List<MissingTimeSheetData> getTimeSheetFileForLastWeek() {
         return fetchFileFromAWS(env.getProperty("cloud.aws.weekly.timesheet.file.prefix"));
     }
 
+    @Cacheable("employeesNamesOfMissingTimeSheet")
     public List<MissingTimeSheetData> getTimeSheetFileForProjectLastWeek() {
         return fetchFileFromAWS(env.getProperty("cloud.aws.weekly.project.timeseet.mising.file.prefix"));
     }
