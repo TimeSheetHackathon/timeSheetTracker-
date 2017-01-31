@@ -69,8 +69,7 @@ public class TimeSheetService {
 
     public List<String> getEmployeesNamesForAProject(String city,String project){
        return s3Client.getTimeSheetFileForProjectLastWeek().stream()
-               .filter(timeSheetData -> timeSheetData.getWorkingLocation().equals(city.toUpperCase()) &&
-               timeSheetData.getProjectName().equals(project.toUpperCase()))
+               .filter(matchCity(city).and(matchProject(project)))
                .map(MissingTimeSheetData::getEmployeeName)
                .collect(toList());
     }
@@ -88,6 +87,10 @@ public class TimeSheetService {
 
     private Predicate<MissingTimeSheetData> matchCity(String city) {
         return timeSheetEntry -> timeSheetEntry.getWorkingLocation().equals(city.toUpperCase());
+    }
+
+    private Predicate<MissingTimeSheetData> matchProject(String project) {
+        return timeSheetEntry -> timeSheetEntry.getProjectName().equals(project.toUpperCase());
     }
 
     private Predicate<MissingTimeSheetData> matchCountry(String country) {
