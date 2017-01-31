@@ -42,20 +42,21 @@ public class TimeSheetService {
 
 
     public List<MissingTimeSheetPercentage> getMissingTimeSheetPercentagesForOfficesInCountry(String country) {
-        return getMissingTimeSheet(s3Client.getTimeSheetFileForLastWeek(),
-                matchCountry(country),
-                MissingTimeSheetData::getWorkingLocation)
-                .entrySet().stream()
-                .map(cityEntry -> MissingTimeSheetPercentage.builder()
-                        .workingLocation(cityEntry.getKey())
-                        .missingTimeSheetPercentage(calculatePercentage(cityEntry))
-                        .build())
+        Map<String, Long> cityWithMissingTimeSheetCount =
+                getMissingTimeSheet(s3Client.getTimeSheetFileForLastWeek(),
+                        matchCountry(country),
+                        MissingTimeSheetData::getWorkingLocation);
+        return peopleCounter.getPeopleCount()
+                .keySet().stream()
+                .map(city -> MissingTimeSheetPercentage.builder()
+                    .workingLocation(city)
+                    .missingTimeSheetPercentage(calculatePercentage(cityWithMissingTimeSheetCount, city))
+                    .build())
                 .sorted(Comparator.comparingInt(MissingTimeSheetPercentage::getMissingTimeSheetPercentage))
                 .collect(toList());
     }
 
     public List<MissingTimeSheetCountForProject> getMissingTimeSheetForProjectsForOneCity(String city) {
-
         return getMissingTimeSheet(s3Client.getTimeSheetFileForProjectLastWeek(),
                 matchCity(city),
                 MissingTimeSheetData::getProjectName)
@@ -67,11 +68,11 @@ public class TimeSheetService {
                 .collect(toList());
     }
 
-    public List<String> getEmployeesNamesForAProject(String city,String project){
-       return s3Client.getTimeSheetFileForProjectLastWeek().stream()
-               .filter(matchCity(city).and(matchProject(project)))
-               .map(MissingTimeSheetData::getEmployeeName)
-               .collect(toList());
+    public List<String> getEmployeesNamesForAProject(String city, String project) {
+        return s3Client.getTimeSheetFileForProjectLastWeek().stream()
+                .filter(matchCity(city).and(matchProject(project)))
+                .map(MissingTimeSheetData::getEmployeeName)
+                .collect(toList());
     }
 
     public List<Employee> getEmployeesNamesForACity(String city) {
@@ -106,8 +107,10 @@ public class TimeSheetService {
                 .get(true);
     }
 
-    private int calculatePercentage(Map.Entry<String, Long> cityEntry) {
-        return cityEntry.getValue().intValue() * 100 / peopleCounter.getPeopleCount().get(cityEntry.getKey());
+    private int calculatePercentage(Map<String, Long> cityWithMissingTimeSheetCount, String city) {
+        Long missingTimeSheetCount = cityWithMissingTimeSheetCount.get(city);
+        return missingTimeSheetCount == null ?      0 :
+                (int) (+missingTimeSheetCount * 100 / peopleCounter.getPeopleCount().get(city));
     }
 
 

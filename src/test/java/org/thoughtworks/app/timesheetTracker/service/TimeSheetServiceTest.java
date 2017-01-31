@@ -150,7 +150,7 @@ public class TimeSheetServiceTest {
         final List<MissingTimeSheetPercentage> serviceResult =
                 timeSheetService.getMissingTimeSheetPercentagesForOfficesInCountry("INDIA");
 
-        assertEquals(2, serviceResult.size());
+        assertEquals(5, serviceResult.size());
 
         final Map<String, List<MissingTimeSheetPercentage>> splitByCity =
                 serviceResult.stream().collect(groupingBy(e -> e.getWorkingLocation()));
@@ -161,6 +161,9 @@ public class TimeSheetServiceTest {
 
         final List<MissingTimeSheetPercentage> pune = splitByCity.get("PUNE");
         assertEquals(Integer.valueOf(25), pune.get(0).getMissingTimeSheetPercentage());
+
+        final List<MissingTimeSheetPercentage> gurgaon = splitByCity.get("GURGAON");
+        assertEquals(Integer.valueOf(0), gurgaon.get(0).getMissingTimeSheetPercentage());
     }
 
     @Test
