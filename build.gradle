@@ -36,6 +36,8 @@ dependencies {
     compile group: 'org.json', name: 'json', version:'20160810'
     compile group: 'org.projectlombok', name:'lombok', version: '1.16.12'
     compile group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '2.1.0'
+    compile group: 'org.jasypt', name: 'jasypt', version: '1.9.1'
+
 
 
     testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version:'1.4.3.RELEASE') {
