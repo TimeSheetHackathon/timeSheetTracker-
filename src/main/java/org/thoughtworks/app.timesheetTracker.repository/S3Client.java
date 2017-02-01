@@ -56,6 +56,7 @@ public class S3Client {
     return fetchFileFromAWS().andThen(parseMissingTimeSheetData()).apply(filePrefix);
   }
 
+  @Cacheable("totalEmployees")
   public List<Employee> getTotalEmployeesFile(){
     final String filePrefix = env.getProperty("cloud.aws.weekly.total.employees.file.prefix");
     return fetchFileFromAWS().andThen(parseEmployeeData()).apply(filePrefix);
