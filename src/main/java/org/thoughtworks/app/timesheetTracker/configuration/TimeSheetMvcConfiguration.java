@@ -2,6 +2,7 @@ package org.thoughtworks.app.timesheetTracker.configuration;
 
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,11 @@ public class TimeSheetMvcConfiguration extends WebMvcConfigurerAdapter {
         String awsAccessKey = Decryption.getDecryptedText(env.getProperty("aws_access_key_id")) ;
         String awsSecretAccessKey = Decryption.getDecryptedText(env.getProperty("aws_secret_access_key"));
         return new AmazonS3Client( new BasicAWSCredentials(awsAccessKey,awsSecretAccessKey));
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 
 }

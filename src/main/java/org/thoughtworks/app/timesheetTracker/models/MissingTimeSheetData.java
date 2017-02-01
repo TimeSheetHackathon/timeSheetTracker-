@@ -1,7 +1,6 @@
 package org.thoughtworks.app.timesheetTracker.models;
 
 
-import com.amazonaws.services.dynamodbv2.xspec.S;
 import lombok.Builder;
 import lombok.Data;
 
