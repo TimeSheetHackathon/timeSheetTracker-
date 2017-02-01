@@ -21,32 +21,32 @@
     <script src="/static/js/directives/defaulter-carousel.js"></script>
 </head>
 <body ng-controller="timesheetController" data-ng-init="init()">
-    <nav class="navbar navbar-inverse bg-inverse">
-        <a class="navbar-brand" href="#">
-            <h1 class="navbar-brand mb-0">TIMESHEET TRACKER</h1>
-        </a>
-    </nav>
+<nav class="navbar navbar-inverse bg-inverse">
+    <a class="navbar-brand" href="#">
+        <h1 class="navbar-brand mb-0">TIMESHEET TRACKER</h1>
+    </a>
+</nav>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-8 left-panel">
-                <div class="panel-title">
-                    <b>TIMESHEETS FILLED PERCENTAGE</b>
-                </div>
-                <div id="stat-area">
-                    <radial chart-data="missingTimeSheetPercentageData" ng-if="dataHasLoaded"></radial>
-                </div>
+<div class="container">
+    <div class="row">
+        <div class="col-8 left-panel">
+            <div class="panel-title">
+                <b>TIMESHEETS FILLED PERCENTAGE</b>
             </div>
-            <div class="col-4 right-panel">
-                    <div class="panel-title">
-                        <b>DEFAULTERS</b>
-                    </div>
-                    <div>
-                        <defaulter data="listOfDefaulters" ng-if="defaulterDataHasLoaded"></defaulter>
-                    </div>
-                </div>
+            <div id="stat-area">
+                <radial chart-data="missingTimeSheetPercentageData" ng-if="dataHasLoaded"></radial>
+            </div>
+        </div>
+        <div class="col-4 right-panel">
+            <div class="panel-title">
+                <b>DEFAULTERS</b>
+            </div>
+            <div>
+                <defaulter data="listOfDefaulters" ng-if="defaulterDataHasLoaded"></defaulter>
             </div>
         </div>
     </div>
+</div>
+</div>
 </body>
 </html>

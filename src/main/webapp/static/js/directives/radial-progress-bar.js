@@ -1,9 +1,9 @@
 var percentColors = [
-    { pct: 0.0, color: { r: 0xff, g: 0x00, b: 0 } },
-    { pct: 0.8, color: { r: 0xff, g: 0xaa, b: 0 } },
-    { pct: 1.0, color: { r: 0x00, g: 0xaa, b: 0 } } ];
+    {pct: 0.0, color: {r: 0xff, g: 0x00, b: 0}},
+    {pct: 0.8, color: {r: 0xff, g: 0xaa, b: 0}},
+    {pct: 1.0, color: {r: 0x00, g: 0xaa, b: 0}}];
 
-var getColorForPercentage = function(pct) {
+var getColorForPercentage = function (pct) {
     for (var i = 1; i < percentColors.length - 1; i++) {
         if (pct < percentColors[i].pct) {
             break;
@@ -24,20 +24,20 @@ var getColorForPercentage = function(pct) {
     // or output as hex if preferred
 }
 
-app.directive("radial", function($parse){
-    return{
+app.directive("radial", function ($parse) {
+    return {
         restrict: "E",
         replace: false,
         scope: {data: '=chartData'},
-        link: function(scope, element, attrs){
-            percentColors[1].pct = (100 - scope.data[scope.data.length - 1].missingTimeSheetPercentage)/100;
+        link: function (scope, element, attrs) {
+            percentColors[1].pct = (100 - scope.data[scope.data.length - 1].missingTimeSheetPercentage) / 100;
 
             for (var i = 0; i < scope.data.length; i++) {
                 var radius = 75;
                 var border = 15;
                 var padding = 30;
                 var startPercent = 0;
-                var endPercent = (100 - scope.data[i].missingTimeSheetPercentage)/100;
+                var endPercent = (100 - scope.data[i].missingTimeSheetPercentage) / 100;
 
 
                 var twoPi = Math.PI * 2;

@@ -1,9 +1,9 @@
-app.directive("defaulter", function($parse){
-    return{
+app.directive("defaulter", function ($parse) {
+    return {
         restrict: "E",
         replace: false,
         scope: {data: '=data'},
-        link: function(scope, element, attrs){
+        link: function (scope, element, attrs) {
 
             var parent = d3.select(element[0]);
 
@@ -13,11 +13,11 @@ app.directive("defaulter", function($parse){
                 .attr('data-ride', "carousel");
 
             var ol = defaulterCarousel.append('ol')
-                    .attr('class', "carousel-indicators");
+                .attr('class', "carousel-indicators");
 
             var inner = defaulterCarousel.append('div')
-                    .attr('class', "carousel-inner")
-                    .attr('role', "listbox");
+                .attr('class', "carousel-inner")
+                .attr('role', "listbox");
 
             var numOfElements = scope.data.length;
             var numOfPages = Math.ceil(numOfElements / 10);
@@ -32,14 +32,14 @@ app.directive("defaulter", function($parse){
 
                 var grid = item.append('div')
                     .attr('class', "grid");
-                for(var j = 0; j < 10 && i+j < numOfElements; j++){
+                for (var j = 0; j < 10 && (i * 10) + j < numOfElements; j++) {
                     grid.append('div')
-                        .attr('id', scope.data[i + j].id)
+                        .attr('id', scope.data[(i * 10) + j].id)
                         .attr('class', "row def-element")
-                        .text(scope.data[i + j].name);
+                        .text(scope.data[(i * 10) + j].name);
                 }
 
-                if(i === 0){
+                if (i === 0) {
                     li.attr('class', "active");
                     item.attr('class', "carousel-item active");
                 }
@@ -47,10 +47,10 @@ app.directive("defaulter", function($parse){
             }
 
             var leftControl = defaulterCarousel.append('a')
-                    .attr('class', "carousel-control-prev")
-                    .attr('href', "#defaulterCarousel")
-                    .attr('role', "button")
-                    .attr('data-slide', "prev");
+                .attr('class', "carousel-control-prev")
+                .attr('href', "#defaulterCarousel")
+                .attr('role', "button")
+                .attr('data-slide', "prev");
 
             leftControl.append('span')
                 .attr('class', "carousel-control-prev-icon")

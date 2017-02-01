@@ -1,6 +1,6 @@
 var app = angular.module('app', []);
 
-app.controller("timesheetController", function($scope, $http) {
+app.controller("timesheetController", function ($scope, $http) {
 
     $scope.missingTimeSheetPercentageData = "";
     $scope.listOfDefaulters = "";
