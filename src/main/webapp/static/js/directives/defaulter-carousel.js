@@ -5,6 +5,15 @@ app.directive("defaulter", function ($parse) {
         scope: {data: '=data'},
         link: function (scope, element, attrs) {
 
+            scope.data = scope.data.map(function (e) {
+                e.name = e.name.split(",").reverse().join(" ");
+                return e;
+            });
+
+            scope.data.sort(function (p, q) {
+                return +(p.name > q.name) || +(p.name === q.name) - 1
+            });
+
             var parent = d3.select(element[0]);
 
             var defaulterCarousel = parent.append('div')
