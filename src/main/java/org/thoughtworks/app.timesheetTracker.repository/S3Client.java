@@ -1,6 +1,5 @@
 package org.thoughtworks.app.timesheetTracker.repository;
 
-import com.amazonaws.services.dynamodbv2.xspec.S;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
@@ -14,18 +13,19 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
 import org.thoughtworks.app.timesheetTracker.controller.TimeSheetTrackerController;
+import org.thoughtworks.app.timesheetTracker.models.Employee;
 import org.thoughtworks.app.timesheetTracker.models.MissingTimeSheetData;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static java.lang.String.valueOf;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
 
 
 @Repository
@@ -38,18 +38,26 @@ public class S3Client {
   @Autowired
   private AmazonS3Client amazonS3Client;
 
+  @Autowired
+  private ObjectMapper mapper;
+
   private final static Logger logger = LoggerFactory.getLogger(TimeSheetTrackerController.class);
 
   @Cacheable("timeSheetFileForLastWeek")
   public List<MissingTimeSheetData> getTimeSheetFileForLastWeek() {
     final String filePrefix = env.getProperty("cloud.aws.weekly.timesheet.file.prefix");
-    return fetchFileFromAWS().andThen(parseEmployeeData()).apply(filePrefix);
+    return fetchFileFromAWS().andThen(parseMissingTimeSheetData()).apply(filePrefix);
   }
 
   @Cacheable("employeesNamesOfMissingTimeSheet")
   public List<MissingTimeSheetData> getTimeSheetFileForProjectLastWeek() {
     final String filePrefix =
         env.getProperty("cloud.aws.weekly.project.timeseet.mising.file.prefix");
+    return fetchFileFromAWS().andThen(parseMissingTimeSheetData()).apply(filePrefix);
+  }
+
+  public List<Employee> getTotalEmployeesFile(){
+    final String filePrefix = env.getProperty("cloud.aws.weekly.total.employees.file.prefix");
     return fetchFileFromAWS().andThen(parseEmployeeData()).apply(filePrefix);
   }
 
@@ -70,10 +78,30 @@ public class S3Client {
     };
   }
 
+  private Function<InputStream, List<Employee>> parseEmployeeData() {
+      return input -> {
+        try {
+          return new JSONArray(IOUtils.toString(input)).toList().stream()
+              .map(e-> {
+                Map employee = mapper.convertValue(e, Map.class);
+                return Employee.builder()
+                    .employeeId(valueOf(employee.getOrDefault("id","")))
+                    .employeeName(valueOf(employee.getOrDefault("name","")))
+                    .role(valueOf(employee.getOrDefault("role","")).toUpperCase())
+                    .country(valueOf(employee.getOrDefault("country","")).toUpperCase())
+                    .workingLocation(valueOf(employee.getOrDefault("working-office","")).toUpperCase())
+                    .build();
+              })
+              .collect(toList());
+        } catch (IOException e) {
+          logger.info(e.getMessage());
+        }
+        return emptyList();
+      };
+  }
 
-  private Function<InputStream, List<MissingTimeSheetData>> parseEmployeeData() {
+  private Function<InputStream, List<MissingTimeSheetData>> parseMissingTimeSheetData() {
     return input -> {
-      final ObjectMapper mapper = new ObjectMapper();
       try {
         return new JSONArray(IOUtils.toString(input)).toList().stream()
             .map(e -> {
@@ -81,17 +109,17 @@ public class S3Client {
 
               return MissingTimeSheetData.builder()
                   .country(valueOf(timeSheetDataMap.getOrDefault("country", "")).toUpperCase())
-                  .employeeId(valueOf(timeSheetDataMap.getOrDefault("id", "")).toUpperCase())
+                  .employeeId(valueOf(timeSheetDataMap.getOrDefault("id", "")))
                   .workingLocation(valueOf(timeSheetDataMap.getOrDefault("working-office", "")).toUpperCase())
                   .projectName(valueOf(timeSheetDataMap.getOrDefault("project-name", "")).toUpperCase())
                   .employeeName(valueOf(timeSheetDataMap.getOrDefault("name", "")))
                   .build();
             })
-            .collect(Collectors.toList());
+            .collect(toList());
       } catch (IOException e) {
         logger.info(e.getMessage());
       }
-      return Collections.emptyList();
+      return emptyList();
     };
   }
 

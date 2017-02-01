@@ -2,6 +2,7 @@ package org.thoughtworks.app.timesheetTracker.configuration;
 
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -50,6 +51,11 @@ public class TimeSheetMvcConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public AmazonS3Client amazonS3Client() {
         return new AmazonS3Client(new DefaultAWSCredentialsProviderChain());
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 
 }
