@@ -41,7 +41,7 @@ public class S3Client {
   @Autowired
   private ObjectMapper mapper;
 
-  private final static Logger logger = LoggerFactory.getLogger(TimeSheetTrackerController.class);
+  private final static Logger logger = LoggerFactory.getLogger(S3Client.class);
 
   @Cacheable("timeSheetFileForLastWeek")
   public List<MissingTimeSheetData> getTimeSheetFileForLastWeek() {
@@ -57,7 +57,7 @@ public class S3Client {
   }
 
   @Cacheable("totalEmployees")
-  public List<Employee> getTotalEmployeesFile(){
+  public List<Employee> getAllEmployees(){
     final String filePrefix = env.getProperty("cloud.aws.weekly.total.employees.file.prefix");
     return fetchFileFromAWS().andThen(parseEmployeeData()).apply(filePrefix);
   }

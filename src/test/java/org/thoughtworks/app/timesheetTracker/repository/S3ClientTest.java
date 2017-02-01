@@ -6,23 +6,18 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.methods.HttpGet;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.env.Environment;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.thoughtworks.app.timesheetTracker.models.Employee;
 import org.thoughtworks.app.timesheetTracker.models.MissingTimeSheetData;
 
 import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -81,7 +76,7 @@ public class S3ClientTest {
         when(amazonS3Client.getObject("bucket-name", "prefix")).thenReturn(s3Object);
         when(s3Object.getObjectContent()).thenReturn(returnObject);
 
-        List<Employee> totalEmployees = s3Client.getTotalEmployeesFile();
+        List<Employee> totalEmployees = s3Client.getAllEmployees();
         assertEquals(10, totalEmployees.size());
         long bangalore = totalEmployees.stream()
             .filter(employee -> employee.getWorkingLocation()

@@ -66,11 +66,11 @@ public class TimeSheetServiceTest {
         );
 
         employeeCount = Collections.unmodifiableMap(Stream.of(
-                new AbstractMap.SimpleEntry<>("BANGALORE", 2),
-                new AbstractMap.SimpleEntry<>("GURGAON", 2),
-                new AbstractMap.SimpleEntry<>("PUNE", 4),
-                new AbstractMap.SimpleEntry<>("CHENNAI", 5),
-                new AbstractMap.SimpleEntry<>("HYDERABAD", 1)
+                new AbstractMap.SimpleEntry<>("BANGALORE", 2L),
+                new AbstractMap.SimpleEntry<>("GURGAON", 2L),
+                new AbstractMap.SimpleEntry<>("PUNE", 4L),
+                new AbstractMap.SimpleEntry<>("CHENNAI", 5L),
+                new AbstractMap.SimpleEntry<>("HYDERABAD", 1L)
         ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)));
         when(client.getTimeSheetFileForLastWeek()).thenReturn(result);
 
@@ -145,7 +145,7 @@ public class TimeSheetServiceTest {
 
     @Test
     public void testGetMissingTimeSheetPercentagesForIndiaOffices() throws Exception {
-        when(peopleCounter.getPeopleCount()).thenReturn(employeeCount);
+        when(peopleCounter.getPeopleCount("INDIA")).thenReturn(employeeCount);
 
         final List<MissingTimeSheetPercentage> serviceResult =
                 timeSheetService.getMissingTimeSheetPercentagesForOfficesInCountry("INDIA");
