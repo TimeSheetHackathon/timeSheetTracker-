@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.env.Environment;
+import org.thoughtworks.app.timesheetTracker.DateUtil.Date;
 import org.thoughtworks.app.timesheetTracker.models.Employee;
 import org.thoughtworks.app.timesheetTracker.models.MissingTimeSheetData;
 
@@ -35,6 +36,8 @@ public class S3ClientTest {
     private AmazonS3Client amazonS3Client;
     @Mock
     private HttpGet httpGet;
+    @Mock
+    private Date date;
     @Spy
     private ObjectMapper mapper;
 

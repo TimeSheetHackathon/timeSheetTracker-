@@ -12,13 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
-import org.thoughtworks.app.timesheetTracker.controller.TimeSheetTrackerController;
+import org.thoughtworks.app.timesheetTracker.DateUtil.Date;
 import org.thoughtworks.app.timesheetTracker.models.Employee;
 import org.thoughtworks.app.timesheetTracker.models.MissingTimeSheetData;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Calendar;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -40,6 +40,9 @@ public class S3Client {
 
   @Autowired
   private ObjectMapper mapper;
+
+  @Autowired
+  private Date date;
 
   private final static Logger logger = LoggerFactory.getLogger(S3Client.class);
 
@@ -68,7 +71,7 @@ public class S3Client {
 
       final S3Object s3Object =
           amazonS3Client.getObject(env.getProperty("cloud.aws.timesheet.bucket.name"),
-              String.format(filePrefix, getPreviousWeek()));
+              String.format(filePrefix, date.getYearOfPreviousWeekStartingDate(ZonedDateTime.now()), date.getPreviousWeek()));
       try {
         return s3Object.getObjectContent();
       } catch (Exception e) {
@@ -122,10 +125,6 @@ public class S3Client {
       }
       return emptyList();
     };
-  }
-
-  private int getPreviousWeek() {
-    return Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) - 1;
   }
 
 }
