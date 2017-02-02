@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.env.Environment;
-import org.thoughtworks.app.timesheetTracker.DateUtil.Date;
+import org.thoughtworks.app.timesheetTracker.Date.DateUtil;
 import org.thoughtworks.app.timesheetTracker.models.Employee;
 import org.thoughtworks.app.timesheetTracker.models.MissingTimeSheetData;
 
@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 
@@ -37,7 +36,7 @@ public class S3ClientTest {
     @Mock
     private HttpGet httpGet;
     @Mock
-    private Date date;
+    private DateUtil date;
     @Spy
     private ObjectMapper mapper;
 
