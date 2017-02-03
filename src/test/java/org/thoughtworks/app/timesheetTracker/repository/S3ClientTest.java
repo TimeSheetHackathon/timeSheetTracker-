@@ -55,7 +55,7 @@ public class S3ClientTest {
         when(amazonS3Client.getObject("bucket-name", "prefix")).thenReturn(s3Object);
         when(s3Object.getObjectContent()).thenReturn(returnObject);
 
-        List<MissingTimeSheetData> timeSheetFileForLastWeek = s3Client.getTimeSheetFileForLastWeek();
+        List<MissingTimeSheetData> timeSheetFileForLastWeek = s3Client.getTimeSheetDataForLastWeek();
         assertEquals(6, timeSheetFileForLastWeek.size());
         long indiaanMissingTimeSheet =
                 timeSheetFileForLastWeek.stream()

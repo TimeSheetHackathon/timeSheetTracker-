@@ -23,10 +23,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static java.lang.String.valueOf;
 import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
+import static org.springframework.util.StringUtils.isEmpty;
 
 
 @Repository
@@ -48,13 +51,13 @@ public class S3Client {
   private final static Logger logger = LoggerFactory.getLogger(S3Client.class);
 
   @Cacheable("timeSheetFileForLastWeek")
-  public List<MissingTimeSheetData> getTimeSheetFileForLastWeek() {
+  public List<MissingTimeSheetData> getTimeSheetDataForLastWeek() {
     final String filePrefix = env.getProperty("cloud.aws.weekly.timesheet.file.prefix");
     return fetchFileFromAWS().andThen(parseMissingTimeSheetData()).apply(filePrefix);
   }
 
   @Cacheable("employeesNamesOfMissingTimeSheet")
-  public List<MissingTimeSheetData> getTimeSheetFileForProjectLastWeek() {
+  public List<MissingTimeSheetData> getTimeSheetDataForProjectLastWeek() {
     final String filePrefix =
         env.getProperty("cloud.aws.weekly.project.timeseet.mising.file.prefix");
     return fetchFileFromAWS().andThen(parseMissingTimeSheetData()).apply(filePrefix);
@@ -118,9 +121,11 @@ public class S3Client {
                   .workingLocation(valueOf(timeSheetDataMap.getOrDefault("working-office", "")).toUpperCase())
                   .projectName(valueOf(timeSheetDataMap.getOrDefault("project-name", "")).toUpperCase())
                   .employeeName(valueOf(timeSheetDataMap.getOrDefault("name", "")))
+                  .role(valueOf(timeSheetDataMap.getOrDefault("role", "")).toUpperCase())
                   .build();
             })
-            .collect(toList());
+            .collect(partitioningBy(e->validateEmployee().test(e)))
+              .get(true);
       } catch (IOException e) {
         logger.info(e.getMessage());
       }
@@ -128,5 +133,9 @@ public class S3Client {
     };
   }
 
+
+  private Predicate<MissingTimeSheetData> validateEmployee() {
+    return MissingTimeSheetData::validate;
+  }
 }
 

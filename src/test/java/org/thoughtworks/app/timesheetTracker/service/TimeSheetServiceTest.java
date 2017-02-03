@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.omg.CORBA._IDLTypeStub;
 import org.thoughtworks.app.timesheetTracker.contract.Employee;
 import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetCount;
 import org.thoughtworks.app.timesheetTracker.contract.MissingTimeSheetCountForProject;
@@ -72,7 +71,7 @@ public class TimeSheetServiceTest {
                 new AbstractMap.SimpleEntry<>("CHENNAI", 5L),
                 new AbstractMap.SimpleEntry<>("HYDERABAD", 1L)
         ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)));
-        when(client.getTimeSheetFileForLastWeek()).thenReturn(result);
+        when(client.getTimeSheetDataForLastWeek()).thenReturn(result);
 
 
         duplicateData = Arrays.asList(
@@ -168,7 +167,7 @@ public class TimeSheetServiceTest {
 
     @Test
     public void testGetMissingTimeSheetForProjectsForOneCity() throws Exception {
-       when(client.getTimeSheetFileForProjectLastWeek()).thenReturn(result);
+       when(client.getTimeSheetDataForProjectLastWeek()).thenReturn(result);
         final List<MissingTimeSheetCountForProject> bangalore = timeSheetService
                 .getMissingTimeSheetForProjectsForOneCity("Bangalore");
 
@@ -179,7 +178,7 @@ public class TimeSheetServiceTest {
 
     @Test
     public void testGetEmployeesNamesForAProject() throws Exception {
-        when(client.getTimeSheetFileForProjectLastWeek()).thenReturn(result);
+        when(client.getTimeSheetDataForProjectLastWeek()).thenReturn(result);
         List<String> employeesNames = timeSheetService.getEmployeesNamesForAProject("Bangalore", "Kroger");
         assertEquals(1, employeesNames.size());
         assertEquals("M,Gayathri",employeesNames.get(0));
@@ -187,7 +186,7 @@ public class TimeSheetServiceTest {
 
     @Test
     public void testGetEmployeesNamesForACity() throws Exception {
-        when(client.getTimeSheetFileForProjectLastWeek()).thenReturn(result);
+        when(client.getTimeSheetDataForProjectLastWeek()).thenReturn(result);
         List<Employee> employeesNames = timeSheetService.getEmployeesNamesForACity("Bangalore");
         assertEquals(1, employeesNames.size());
         assertEquals("M,Gayathri",employeesNames.get(0).getName());
@@ -196,7 +195,7 @@ public class TimeSheetServiceTest {
 
     @Test
     public void shouldReturnUniqueEmployeesNamesForACity() throws Exception {
-        when(client.getTimeSheetFileForProjectLastWeek()).thenReturn(duplicateData);
+        when(client.getTimeSheetDataForProjectLastWeek()).thenReturn(duplicateData);
         List<Employee> employeesNames = timeSheetService.getEmployeesNamesForACity("Bangalore");
         assertEquals(1,employeesNames.size());
         assertEquals("M,Gayathri",employeesNames.get(0).getName());
@@ -205,7 +204,7 @@ public class TimeSheetServiceTest {
 
     @Test
     public void shouldReturnSameEmployeesNamesWhenEmployeesHaveDifferentId() throws Exception {
-        when(client.getTimeSheetFileForProjectLastWeek()).thenReturn(differentIdEmployees);
+        when(client.getTimeSheetDataForProjectLastWeek()).thenReturn(differentIdEmployees);
         List<Employee> employeesNames = timeSheetService.getEmployeesNamesForACity("Bangalore");
         assertEquals(2, employeesNames.size());
         assertEquals("M,Gayathri",employeesNames.get(0).getName());

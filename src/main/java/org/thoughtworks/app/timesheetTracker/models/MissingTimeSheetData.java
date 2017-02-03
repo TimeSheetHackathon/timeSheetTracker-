@@ -3,6 +3,10 @@ package org.thoughtworks.app.timesheetTracker.models;
 
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.util.StringUtils;
+
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 @Data
 @Builder
@@ -12,6 +16,15 @@ public class MissingTimeSheetData {
 	private String country;
 	private String projectName;
 	private String employeeName;
+	private String role;
+
+	public Boolean validate() {
+		return Stream.of(employeeId, employeeName)
+				.allMatch(isNotEmpty().negate());
+	}
+	private Predicate<String> isNotEmpty() {
+		return StringUtils::isEmpty;
+	}
 }
 
 

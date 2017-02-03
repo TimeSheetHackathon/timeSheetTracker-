@@ -29,7 +29,7 @@ public class TimeSheetService {
     private PeopleCounter peopleCounter;
 
     public List<MissingTimeSheetCount> getMissingTimeSheetCountForOfficesInCountry(String country) {
-        return getMissingTimeSheet(s3Client.getTimeSheetFileForLastWeek(),
+        return getMissingTimeSheet(s3Client.getTimeSheetDataForLastWeek(),
                 matchCountry(country),
                 MissingTimeSheetData::getWorkingLocation)
                 .entrySet().stream()
@@ -43,7 +43,7 @@ public class TimeSheetService {
 
     public List<MissingTimeSheetPercentage> getMissingTimeSheetPercentagesForOfficesInCountry(String country) {
         Map<String, Long> cityWithMissingTimeSheetCount =
-                getMissingTimeSheet(s3Client.getTimeSheetFileForLastWeek(),
+                getMissingTimeSheet(s3Client.getTimeSheetDataForLastWeek(),
                         matchCountry(country),
                         MissingTimeSheetData::getWorkingLocation);
         return peopleCounter.getPeopleCount(country)
@@ -57,7 +57,7 @@ public class TimeSheetService {
     }
 
     public List<MissingTimeSheetCountForProject> getMissingTimeSheetForProjectsForOneCity(String city) {
-        return getMissingTimeSheet(s3Client.getTimeSheetFileForProjectLastWeek(),
+        return getMissingTimeSheet(s3Client.getTimeSheetDataForProjectLastWeek(),
                 matchCity(city),
                 MissingTimeSheetData::getProjectName)
                 .entrySet().stream()
@@ -69,14 +69,14 @@ public class TimeSheetService {
     }
 
     public List<String> getEmployeesNamesForAProject(String city, String project) {
-        return s3Client.getTimeSheetFileForProjectLastWeek().stream()
+        return s3Client.getTimeSheetDataForProjectLastWeek().stream()
                 .filter(matchCity(city).and(matchProject(project)))
                 .map(MissingTimeSheetData::getEmployeeName)
                 .collect(toList());
     }
 
     public List<Employee> getEmployeesNamesForACity(String city) {
-        return s3Client.getTimeSheetFileForProjectLastWeek().stream()
+        return s3Client.getTimeSheetDataForProjectLastWeek().stream()
                 .filter(matchCity(city))
                 .map(timeSheetData -> Employee.builder()
                         .name(timeSheetData.getEmployeeName())
