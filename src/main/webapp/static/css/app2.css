@@ -1,0 +1,376 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700");
+
+html{
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.carousel-wrapper{
+    position: absolute;
+    top:40px;
+    right: 20px;
+    width: 400px;
+}
+
+.carousel-wrapper .carousel-inner{
+    height: 700px;
+}
+.progress-meter text {
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.left-panel {
+    padding-top: 20px;
+    padding-right:20px;
+    border-right: 1px solid #ccc;"
+}
+
+.right-panel {
+    padding-top: 20px;
+    padding-left:20px;
+}
+
+.def-element {
+    display: block;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 20px;
+    font-size: x-large;
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    border-bottom: 1px solid #ccc;
+    font-weight: 300;
+    text-align:center;
+}
+
+.carousel-indicators .active {
+    background-color: #868686;
+}
+.carousel-indicators li {
+    background-color: #c3c3c3;
+}
+
+#defaulterCarousel {
+    padding-bottom: 50px;
+}
+.panel-title{
+    text-align:center;
+}
+.panel-title b{
+    font-weight: 300;
+    color: rgb(0, 140, 186)
+
+}
+
+.carousel-item .grid {
+    padding-left: 38px;
+}
+
+.navbar-brand {
+    text-align: center;
+    font-weight: 300;
+}
+
+#stat-area {
+    padding-left: 50px;
+}
+
+
+
+
+/**/
+
+body,
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background-color: #2d7dba;
+    margin: 0;
+    overflow: hidden; /*hack*/
+}
+
+.wrapper {
+    height: 100%;
+}
+.wrapper .sky {
+    height: 35%;
+    background: linear-gradient(to bottom, #add1dd, #e0eefb);
+}
+.wrapper .ocean {
+    position: relative;
+    height: 65%;
+    background: linear-gradient(to top, #2d7dba, #e0eefb);
+}
+
+.wave {
+    position: absolute;
+    top: 35%;
+    width: 200px;
+    height: 50px;
+    background-color: #e0eefb;
+    border-radius: 50%;
+    animation-name: wave;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes wave {
+    from {
+        height: 50px;
+    }
+    to {
+        height: 20px;
+    }
+}
+.boat-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 160px;
+}
+.boat.tilt {
+    transform: rotate(12deg);
+}
+.boat {
+    position: absolute;
+    top: 0px;
+    z-index: 1;
+    left: 0%;
+    width: 150px;
+    height: 63px;
+    animation-name: boat;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-delay: 5.5s;
+}
+
+.sail {
+    position: absolute;
+    height: 127px;
+    width: 5px;
+    background: #333;
+    top: -103px;
+    left: 70px;
+    padding-top: 40%;
+    z-index: 9;
+    box-sizing: border-box;
+    text-indent: 8px;
+}
+
+.front {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 20px;
+    border-color: #cc2133 #cc2133 transparent transparent;
+}
+
+.middle {
+    position: absolute;
+    bottom: 0;
+    left: 40px;
+    width: 70px;
+    height: 40px;
+    background-color: #cc2133;
+    color: #fff;
+    line-height: 40px;
+    text-align: center;
+    font-size: 10px;
+}
+
+.back {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 20px;
+    border-color: #cc2133 transparent transparent #cc2133;
+}
+
+.sail:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: -22px;
+    width: 0;
+    height: 0;
+    border-left: 2px solid transparent;
+    border-right: 40px solid transparent;
+    border-bottom: 100px solid #cecece;
+    transform: rotate(22deg);
+}
+
+.sail::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0px;
+    right: -45px;
+    width: 0;
+    height: 0;
+    border-left: 46px solid transparent;
+    border-right: 22px solid transparent;
+    border-bottom: 117px solid #fff;
+    transform: rotate(-22deg);
+}
+
+.fish {
+    width: 115px;
+    height: 50px;
+    position: absolute;
+    animation-name: fish;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    top: 80%;
+}
+.fish .head {
+    width: 0;
+    height: 0;
+    border-color: darkturquoise transparent transparent darkturquoise;
+    border-width: 25px;
+    border-style: solid;
+    border-radius: 50%;
+    transform: rotate(-45deg);
+}
+.fish .eye {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #000;
+    border-style: solid;
+    border-color: white;
+    border-width: 3px 3px 3px 1px;
+    border-radius: 50%;
+    width: 8px;
+    height: 8px;
+}
+.fish .body {
+    position: absolute;
+    top: 0;
+    left: 25px;
+    width: 10px;
+    height: 50px;
+    background-color: darkturquoise;
+    float: left;
+    margin-left: 0px;
+}
+.fish .tail {
+    position: absolute;
+    top: 0;
+    left: 35px;
+    width: 0;
+    height: 0;
+    border-color: transparent darkturquoise transparent darkturquoise;
+    border-width: 25px 15px 25px 50px;
+    border-style: solid;
+    animation-name: fishtail;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+    animation-duration: .5s;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes fish {
+    from {
+        right: -20%;
+    }
+    to {
+        right: 110%;
+    }
+}
+@keyframes fishtail {
+    from {
+        border-right-width: 15px;
+    }
+    to {
+        border-right-width: 25px;
+    }
+}
+
+.coimbatore .middle {
+ background: #b4b934;
+}
+
+.coimbatore .front {
+    border-color: #b4b934 #b4b934 transparent transparent;
+}
+
+
+.coimbatore .back {
+    border-color: #b4b934 transparent transparent #b4b934;
+}
+
+
+.bangalore .middle {
+    background: #f68e31;
+}
+
+.bangalore .front {
+    border-color: #f68e31 #f68e31 transparent transparent;
+}
+
+.bangalore .back {
+    border-color: #f68e31 transparent transparent #f68e31;
+}
+
+
+.hyderabad .middle {
+    background: #ef5aa0;
+}
+
+.hyderabad .front {
+    border-color: #ef5aa0 #ef5aa0 transparent transparent;
+}
+
+.hyderabad .back {
+    border-color: #ef5aa0 transparent transparent #ef5aa0;
+}
+
+.chennai .middle {
+    background: #1972ba;
+}
+
+.chennai .front {
+    border-color: #1972ba #1972ba transparent transparent;
+}
+
+.chennai .back {
+    border-color: #1972ba transparent transparent #1972ba;
+}
+
+
+.pune .middle {
+    background: #9e775f;
+}
+
+.pune .front {
+    border-color: #9e775f #9e775f transparent transparent;
+}
+
+.pune .back {
+    border-color: #9e775f transparent transparent #9e775f;
+}
+
+
+.gurgaon .middle {
+    background: #692469;
+}
+
+.gurgaon .front {
+    border-color: #692469 #692469 transparent transparent;
+}
+
+.gurgaon .back {
+    border-color: #692469 transparent transparent #692469;
+}

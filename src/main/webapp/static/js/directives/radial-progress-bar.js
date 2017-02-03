@@ -22,7 +22,7 @@ var getColorForPercentage = function (pct) {
     };
     return 'rgb(' + [color.r, color.g, color.b].join(',') + ')';
     // or output as hex if preferred
-}
+};
 
 app.directive("radial", function ($parse) {
     return {
