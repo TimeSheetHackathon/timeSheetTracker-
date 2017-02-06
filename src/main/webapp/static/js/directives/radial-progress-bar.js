@@ -1,28 +1,13 @@
 var percentColors = [
-    {pct: 0.0, color: {r: 0xff, g: 0x00, b: 0}},
-    {pct: 0.8, color: {r: 0xff, g: 0xaa, b: 0}},
-    {pct: 1.0, color: {r: 0x00, g: 0xaa, b: 0}}];
+    {pct: 0.7, color: '#e11520'},
+    {pct: 0.9, color: '#ed781f'},
+    {pct: 1.0, color: '#7baa68'}];
 
 var getColorForPercentage = function (pct) {
-    for (var i = 1; i < percentColors.length - 1; i++) {
-        if (pct < percentColors[i].pct) {
-            break;
-        }
-    }
-    var lower = percentColors[i - 1];
-    var upper = percentColors[i];
-    var range = upper.pct - lower.pct;
-    var rangePct = (pct - lower.pct) / range;
-    var pctLower = 1 - rangePct;
-    var pctUpper = rangePct;
-    var color = {
-        r: Math.floor(lower.color.r * pctLower + upper.color.r * pctUpper),
-        g: Math.floor(lower.color.g * pctLower + upper.color.g * pctUpper),
-        b: Math.floor(lower.color.b * pctLower + upper.color.b * pctUpper)
-    };
-    return 'rgb(' + [color.r, color.g, color.b].join(',') + ')';
-    // or output as hex if preferred
-}
+    return percentColors.find(function(colorEntry) {
+        return pct <= colorEntry.pct;
+    }).color;
+};
 
 app.directive("radial", function ($parse) {
     return {
@@ -30,24 +15,15 @@ app.directive("radial", function ($parse) {
         replace: false,
         scope: {data: '=chartData'},
         link: function (scope, element, attrs) {
-            percentColors[1].pct = (100 - scope.data[scope.data.length - 1].missingTimeSheetPercentage) / 100;
 
             for (var i = 0; i < scope.data.length; i++) {
                 var radius = 75;
                 var border = 15;
                 var padding = 30;
-                var startPercent = 0;
                 var endPercent = (100 - scope.data[i].missingTimeSheetPercentage) / 100;
-
-
                 var twoPi = Math.PI * 2;
                 var formatPercent = d3.format('.0%');
                 var boxSize = (radius + padding) * 2;
-
-
-                var count = Math.abs((endPercent - startPercent) / 0.01);
-                var step = endPercent < startPercent ? -0.01 : 0.01;
-
                 var arc = d3.svg.arc()
                     .startAngle(0)
                     .innerRadius(radius)
@@ -73,18 +49,20 @@ app.directive("radial", function ($parse) {
                     .attr('fill-opacity', 0.5)
                     .attr('d', arc.endAngle(twoPi));
 
+                var colorSelected =  getColorForPercentage(endPercent);
+
                 var foreground = meter.append('path')
                     .attr('class', 'foreground')
-                    .attr('fill', getColorForPercentage(endPercent))
+                    .attr('fill', colorSelected)
                     .attr('fill-opacity', 1)
-                    .attr('stroke', getColorForPercentage(endPercent))
+                    .attr('stroke', colorSelected)
                     .attr('stroke-width', 5)
                     .attr('stroke-opacity', 1)
                     .attr('filter', 'url(#blur)');
 
                 var front = meter.append('path')
                     .attr('class', 'foreground')
-                    .attr('fill', getColorForPercentage(endPercent))
+                    .attr('fill', colorSelected)
                     .attr('fill-opacity', 1);
 
                 var numberText = meter.append('text')
