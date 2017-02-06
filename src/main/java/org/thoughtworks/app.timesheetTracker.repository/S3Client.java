@@ -33,7 +33,6 @@ import static org.springframework.util.StringUtils.isEmpty;
 
 
 @Repository
-
 public class S3Client {
 
   @Autowired
@@ -122,6 +121,7 @@ public class S3Client {
                   .projectName(valueOf(timeSheetDataMap.getOrDefault("project-name", "")).toUpperCase())
                   .employeeName(valueOf(timeSheetDataMap.getOrDefault("name", "")))
                   .role(valueOf(timeSheetDataMap.getOrDefault("role", "")).toUpperCase())
+                  .date(new java.util.Date())
                   .build();
             })
             .collect(partitioningBy(e->validateEmployee().test(e)))

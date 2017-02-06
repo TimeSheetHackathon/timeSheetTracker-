@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -17,6 +18,7 @@ public class MissingTimeSheetData {
 	private String projectName;
 	private String employeeName;
 	private String role;
+	private Date date;
 
 	public Boolean validate() {
 		return Stream.of(employeeId, employeeName)
