@@ -23,7 +23,8 @@ public class MondaySnapShot {
 
   @Scheduled(cron = "0 0 1 * * TUE")
   public void reportCurrentTime(){
-    List<MissingTimeSheetData> timeSheetData = s3Client.getTimeSheetDataForProjectLastWeek();
+    List<MissingTimeSheetData> timeSheetData =
+        s3Client.getTimeSheetDataForProjectLastWeek();
     logger.info(String.format("Size of time sheet data is %s", timeSheetData.size()));
     missingTimeSheetDataRepository.save(timeSheetData);
   }
@@ -31,7 +32,8 @@ public class MondaySnapShot {
   @Scheduled(cron ="0 0 1 * * SUN-MON")
   public void cleanUpOldData() {
     DateTime date = new DateTime().minusMonths(2);
-    List<MissingTimeSheetData> missingTimeSheetDatas = missingTimeSheetDataRepository.removeByDate(date);
+    List<MissingTimeSheetData> missingTimeSheetDatas =
+        missingTimeSheetDataRepository.removeByDate(date);
     logger.debug(String.valueOf(missingTimeSheetDatas));
   }
 
