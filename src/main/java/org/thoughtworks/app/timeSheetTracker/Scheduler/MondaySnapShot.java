@@ -1,5 +1,6 @@
 package org.thoughtworks.app.timeSheetTracker.Scheduler;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.thoughtworks.app.timeSheetTracker.models.MissingTimeSheetData;
 import org.thoughtworks.app.timeSheetTracker.repository.MissingTimeSheetDataRepository;
 import org.thoughtworks.app.timeSheetTracker.repository.S3Client;
 
-import java.util.Date;
 import java.util.List;
 
 @Component
@@ -30,12 +30,9 @@ public class MondaySnapShot {
 
   @Scheduled(cron ="0 0 1 * * SUN-MON")
   public void cleanUpOldData() {
-    System.out.println("Jeeeeep");
-    Date date = new Date();
-    logger.info(String.valueOf(date));
-    List<MissingTimeSheetData> byDayMonthYear = missingTimeSheetDataRepository.findByDayMonthYear(7, 2, 2017);
-    logger.debug(String.valueOf(byDayMonthYear));
-    missingTimeSheetDataRepository.delete(byDayMonthYear);
+    DateTime date = new DateTime().minusMonths(2);
+    List<MissingTimeSheetData> missingTimeSheetDatas = missingTimeSheetDataRepository.removeByDate(date);
+    logger.debug(String.valueOf(missingTimeSheetDatas));
   }
 
 }

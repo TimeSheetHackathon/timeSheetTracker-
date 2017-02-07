@@ -122,9 +122,7 @@ public class S3Client {
                   .projectName(valueOf(timeSheetDataMap.getOrDefault("project-name", "")).toUpperCase())
                   .employeeName(valueOf(timeSheetDataMap.getOrDefault("name", "")))
                   .role(valueOf(timeSheetDataMap.getOrDefault("role", "")).toUpperCase())
-                  .day(today.getDayOfMonth())
-                  .month(today.getMonthOfYear())
-                  .year(today.getYear())
+                  .date(new DateTime())
                   .build();
             })
             .collect(partitioningBy(e->validateEmployee().test(e)))

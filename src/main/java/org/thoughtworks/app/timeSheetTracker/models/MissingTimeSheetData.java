@@ -3,6 +3,7 @@ package org.thoughtworks.app.timeSheetTracker.models;
 
 import lombok.Builder;
 import lombok.Data;
+import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.util.StringUtils;
 
@@ -21,9 +22,8 @@ public class MissingTimeSheetData {
   private String projectName;
   private String employeeName;
   private String role;
-  private int day;
-  private int month;
-  private int year;
+  private DateTime date;
+
 
   public Boolean validate() {
     return Stream.of(employeeId, employeeName)
