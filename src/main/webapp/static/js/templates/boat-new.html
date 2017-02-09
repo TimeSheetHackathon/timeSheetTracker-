@@ -1,8 +1,14 @@
-<div class="boat {{ record.workingLocation.toLowerCase() }}" ng-style="record.style">
-    <div class="sail">{{ (100 - record.missingTimeSheetPercentage) }}</div>
+ <div class="boat {{ record.workingLocation.toLowerCase() }}" ng-style="record.style"> 
+ 	<!-- <div class="sail-new">
+		<svg viewBox="0 0 229.56 241.67"><path class="cls-1" d="M269.44,235.25s83.43,60.84,92.7,77.64c0,0-48.09-5.79-73.58,4.06Z" transform="translate(-137.77 -136.33)"/><path class="cls-2" d="M228.83,136.33l51.91,180.84s-89.78-9.36-143,3.83C137.77,321,140.33,283.56,228.83,136.33Z" transform="translate(-137.77 -136.33)"/><path class="cls-3" d="M231.14,138.52l47.51,157s48.67-4.64,79.38,5.79C358,301.33,293.71,202.26,231.14,138.52Z" transform="translate(-137.77 -136.33)"/><circle class="cls-4" cx="78.74" cy="116.55" r="35.32"/><text class="cls-5" transform="translate(55.56 126.14)">{{ (100 - record.missingTimeSheetPercentage) }}%</text><polygon class="cls-6" points="0.56 185.33 14.56 241.67 214.87 241.67 229.56 185.33 0.56 185.33"/><text class="cls-7" x="115" y="212" text-anchor="middle" alignment-baseline="central" >{{ record.workingLocation }}</text></svg>
+	</div> -->
+
+    <div class="sail"></div>
+    <div class="boat-label">{{ (100 - record.missingTimeSheetPercentage) }}%</div>
     <div class="front"></div>
     <div class="middle">{{ record.workingLocation }}</div>
     <div class="back"></div>
+
 </div>
 
 

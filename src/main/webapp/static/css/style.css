@@ -1,0 +1,445 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700");
+html {
+  font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif; }
+
+.carousel-wrapper {
+  float: left;
+  width: 400px;
+  background: #e0edf9;
+  height: 100%; }
+  .carousel-wrapper h2 {
+    font-size: 22px;
+    padding: 20px 0 0;
+    text-align: center; }
+
+.carousel-wrapper .carousel-inner {
+  height: 700px; }
+
+.progress-meter text {
+  font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  font-weight: 300; }
+
+.left-panel {
+  padding-top: 20px;
+  padding-right: 20px;
+  border-right: 1px solid #ccc; }
+
+.right-panel {
+  padding-top: 20px;
+  padding-left: 20px; }
+
+.def-element {
+  display: block;
+  padding-left: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 20px;
+  font-size: x-large;
+  font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+  border-bottom: 1px solid #ccc;
+  font-weight: 300;
+  text-align: center; }
+
+.carousel-indicators .active {
+  background-color: #868686; }
+
+.carousel-indicators li {
+  background-color: #c3c3c3; }
+
+#defaulterCarousel {
+  padding-bottom: 50px; }
+
+.panel-title {
+  text-align: center; }
+
+.panel-title b {
+  font-weight: 300;
+  color: #008cba; }
+
+.carousel-item .grid {
+  padding-left: 38px; }
+
+.navbar-brand {
+  text-align: center;
+  font-weight: 300; }
+
+#stat-area {
+  padding-left: 50px; }
+
+/**/
+body,
+html {
+  width: 100%;
+  height: 100%; }
+
+body {
+  background-color: #2d7dba;
+  margin: 0;
+  overflow: hidden;
+  /*hack*/ }
+
+.wrapper {
+  height: 100%;
+  width: calc(100% - 400px);
+  float: left;
+  position: relative; }
+
+.wrapper .sky {
+  height: 35%;
+  background: linear-gradient(to bottom, #add1dd, #e0eefb);
+  overflow: auto; }
+
+.wrapper .ocean {
+  position: relative;
+  height: 65%;
+  background: linear-gradient(to top, #2d7dba, #e0eefb); }
+
+.wave {
+  position: absolute;
+  top: 35%;
+  width: 200px;
+  height: 50px;
+  background-color: #e0eefb;
+  border-radius: 50%;
+  animation-name: wave;
+  animation-iteration-count: infinite;
+  animation-direction: alternate; }
+
+@keyframes wave {
+  from {
+    height: 50px; }
+  to {
+    height: 20px; } }
+.boat-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 160px; }
+
+.boat.tilt {
+  transform: rotate(12deg); }
+
+.boat {
+  position: absolute;
+  top: 0px;
+  z-index: 1;
+  left: 0%;
+  width: 150px;
+  height: 63px;
+  animation-name: boat;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-duration: 3s;
+  animation-timing-function: ease-in-out; }
+
+@keyframes boat {
+  from {
+    transform: rotate(-5deg); }
+  to {
+    transform: rotate(5deg); } }
+.sail {
+  position: absolute;
+  height: 127px;
+  width: 5px;
+  background: #333;
+  top: -103px;
+  left: 70px;
+  padding-top: 40%;
+  z-index: 9;
+  box-sizing: border-box;
+  text-indent: 8px; }
+
+.boat-label {
+  position: absolute;
+  right: 30px;
+  top: -23px;
+  z-index: 99;
+  font-size: 13px; }
+
+.front {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 20px;
+  border-color: #cc2133 #cc2133 transparent transparent; }
+
+.middle {
+  position: absolute;
+  bottom: 0;
+  left: 40px;
+  width: 70px;
+  height: 40px;
+  background-color: #cc2133;
+  color: #fff;
+  line-height: 40px;
+  text-align: center;
+  font-size: 11px; }
+
+.back {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 20px;
+  border-color: #cc2133 transparent transparent #cc2133; }
+
+.sail:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: -22px;
+  width: 0;
+  height: 0;
+  border-left: 2px solid transparent;
+  border-right: 40px solid transparent;
+  border-bottom: 100px solid #cecece;
+  transform: rotate(22deg); }
+
+.sail::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0px;
+  right: -45px;
+  width: 0;
+  height: 0;
+  border-left: 46px solid transparent;
+  border-right: 22px solid transparent;
+  border-bottom: 117px solid #fff;
+  transform: rotate(-22deg); }
+
+.fish {
+  width: 115px;
+  height: 50px;
+  position: absolute;
+  animation-name: fish;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  top: 80%; }
+
+.fish .head {
+  width: 0;
+  height: 0;
+  border-color: darkturquoise transparent transparent darkturquoise;
+  border-width: 25px;
+  border-style: solid;
+  border-radius: 50%;
+  transform: rotate(-45deg); }
+
+.fish .eye {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #000;
+  border-style: solid;
+  border-color: white;
+  border-width: 3px 3px 3px 1px;
+  border-radius: 50%;
+  width: 8px;
+  height: 8px; }
+
+.fish .body {
+  position: absolute;
+  top: 0;
+  left: 25px;
+  width: 10px;
+  height: 50px;
+  background-color: darkturquoise;
+  float: left;
+  margin-left: 0px; }
+
+.fish .tail {
+  position: absolute;
+  top: 0;
+  left: 35px;
+  width: 0;
+  height: 0;
+  border-color: transparent darkturquoise transparent darkturquoise;
+  border-width: 25px 15px 25px 50px;
+  border-style: solid;
+  animation-name: fishtail;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+  animation-duration: .5s;
+  animation-timing-function: ease-in-out; }
+
+@keyframes fish {
+  from {
+    right: -20%; }
+  to {
+    right: 110%; } }
+@keyframes fishtail {
+  from {
+    border-right-width: 15px; }
+  to {
+    border-right-width: 25px; } }
+.coimbatore .middle {
+  background: #b4b934; }
+.coimbatore .front {
+  border-color: #b4b934 #b4b934 transparent transparent; }
+.coimbatore .back {
+  border-color: #b4b934 transparent transparent #b4b934; }
+.coimbatore .cls-1,
+.coimbatore .cls-2,
+.coimbatore .cls-3,
+.coimbatore .cls-6 {
+  fill: #b4b934; }
+
+.bangalore .middle {
+  background: #f68e31; }
+.bangalore .front {
+  border-color: #f68e31 #f68e31 transparent transparent; }
+.bangalore .back {
+  border-color: #f68e31 transparent transparent #f68e31; }
+.bangalore .cls-1,
+.bangalore .cls-2,
+.bangalore .cls-3,
+.bangalore .cls-6 {
+  fill: #f68e31; }
+
+.hyderabad .middle {
+  background: #ef5aa0; }
+.hyderabad .front {
+  border-color: #ef5aa0 #ef5aa0 transparent transparent; }
+.hyderabad .back {
+  border-color: #ef5aa0 transparent transparent #ef5aa0; }
+.hyderabad .cls-1,
+.hyderabad .cls-2,
+.hyderabad .cls-3,
+.hyderabad .cls-6 {
+  fill: #ef5aa0; }
+
+.chennai .middle {
+  background: #1972ba; }
+.chennai .front {
+  border-color: #1972ba #1972ba transparent transparent; }
+.chennai .back {
+  border-color: #1972ba transparent transparent #1972ba; }
+.chennai .cls-1,
+.chennai .cls-2,
+.chennai .cls-3,
+.chennai .cls-6 {
+  fill: #1972ba; }
+
+.pune .middle {
+  background: #9e775f; }
+.pune .front {
+  border-color: #9e775f #9e775f transparent transparent; }
+.pune .back {
+  border-color: #9e775f transparent transparent #9e775f; }
+.pune .cls-1,
+.pune .cls-2,
+.pune .cls-3,
+.pune .cls-6 {
+  fill: #9e775f; }
+
+.gurgaon .middle {
+  background: #692469; }
+.gurgaon .front {
+  border-color: #692469 #692469 transparent transparent; }
+.gurgaon .back {
+  border-color: #692469 transparent transparent #692469; }
+.gurgaon .cls-1,
+.gurgaon .cls-2,
+.gurgaon .cls-3,
+.gurgaon .cls-6 {
+  fill: #692469; }
+
+.cloud {
+  width: 200px;
+  height: 60px;
+  background: #fff;
+  border-radius: 200px;
+  -moz-border-radius: 200px;
+  -webkit-border-radius: 200px;
+  position: relative;
+  display: inline-block;
+  margin-top: 80px; }
+
+.cloud:before, .cloud:after {
+  content: '';
+  position: absolute;
+  background: #fff;
+  width: 100px;
+  height: 80px;
+  position: absolute;
+  top: -15px;
+  left: 10px;
+  border-radius: 100px;
+  -moz-border-radius: 100px;
+  -webkit-border-radius: 100px;
+  -webkit-transform: rotate(30deg);
+  transform: rotate(30deg);
+  -moz-transform: rotate(30deg); }
+
+.cloud:after {
+  width: 120px;
+  height: 120px;
+  top: -39px;
+  left: auto;
+  right: 11px; }
+
+.cloud1 {
+  width: 300px; }
+
+.cloud2 {
+  margin-left: 80px; }
+
+.cloud-circle {
+  position: absolute;
+  background: #fff;
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  top: 40px;
+  left: 84px;
+  border-radius: 120px; }
+
+.timesheet-header {
+  position: relative;
+  background: url(../images/cloud.png) no-repeat top left;
+  background-size: 100%;
+  width: 500px;
+  height: 165px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center; }
+
+.timesheet-title {
+  font-size: 21px;
+  line-height: 21px; }
+
+.timesheet-title span {
+  font-size: 30px; }
+
+.sail-new {
+  position: absolute;
+  width: 80%;
+  top: -126%; }
+
+.cls-1 {
+  fill: #5e4231; }
+
+.cls-2 {
+  fill: #eee7b6; }
+
+.cls-3 {
+  fill: #fefad2; }
+
+.cls-4 {
+  fill: #cce0f1; }
+
+.cls-5 {
+  font-size: 26px; }
+
+.cls-7 {
+  font-size: 26px;
+  fill: #fff; }
+
+/*# sourceMappingURL=style.css.map */

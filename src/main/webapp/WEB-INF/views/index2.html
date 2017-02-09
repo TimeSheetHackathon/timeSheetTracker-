@@ -4,12 +4,20 @@
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Timesheet Tracker</title>
     <link rel="stylesheet" type="text/css" href="/static/webjars/bootstrap/4.0.0/css/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="/static/css/app2.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
 </head>
 <body ng-controller="timesheetController" data-ng-init="init()">
 
     <div class="wrapper">
-        <div class="sky"></div>
+        <div class="sky">
+            <div class="timesheet-header">
+                <div class="timesheet-title">TIMESHEET REMINDER <span>(70%)</span></div>
+            </div>
+            <div class="clouds">
+                <div class="cloud-1" data-speed="35000"></div>
+            </div>
+
+        </div>
         <div class="ocean">
 
             <div class="boat-wrapper" ng-repeat="record in missingTimeSheetPercentageData" ng-if="dataHasLoaded">
@@ -28,6 +36,7 @@
     </div>
 
     <div class="carousel-wrapper">
+        <h2>Timesheet Defaulters</h2>
         <defaulter data="listOfDefaulters" ng-if="defaulterDataHasLoaded"></defaulter>
     </div>
 

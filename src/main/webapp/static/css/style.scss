@@ -5,10 +5,16 @@ html{
 }
 
 .carousel-wrapper{
-    position: absolute;
-    top:40px;
-    right: 20px;
+    float: left;
     width: 400px;
+    background: #e0edf9;
+    height: 100%;
+
+    h2 {
+        font-size: 22px;
+        padding: 20px 0 0;
+        text-align: center;
+    }
 }
 
 .carousel-wrapper .carousel-inner{
@@ -23,7 +29,7 @@ html{
 .left-panel {
     padding-top: 20px;
     padding-right:20px;
-    border-right: 1px solid #ccc;"
+    border-right: 1px solid #ccc;
 }
 
 .right-panel {
@@ -38,7 +44,7 @@ html{
     padding-bottom: 10px;
     padding-right: 20px;
     font-size: x-large;
-    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
     border-bottom: 1px solid #ccc;
     font-weight: 300;
     text-align:center;
@@ -95,6 +101,9 @@ body {
 
 .wrapper {
     height: 100%;
+    width: calc(100% - 400px);
+    float: left;
+    position: relative;
 }
 .wrapper .sky {
     height: 35%;
@@ -145,8 +154,17 @@ body {
     animation-name: boat;
     animation-iteration-count: infinite;
     animation-direction: alternate;
-    animation-duration: 0.5s;
+    animation-duration: 3s;
     animation-timing-function: ease-in-out;
+}
+
+@keyframes boat {
+  from {
+    transform: rotate(-5deg) ;
+  }
+  to {
+    transform: rotate(5deg);
+  }
 }
 
 
@@ -161,6 +179,14 @@ body {
     z-index: 9;
     box-sizing: border-box;
     text-indent: 8px;
+}
+
+.boat-label {
+    position: absolute;
+    right: 30px;
+    top: -23px;
+    z-index: 99;
+    font-size: 13px;
 }
 
 .front {
@@ -184,7 +210,7 @@ body {
     color: #fff;
     line-height: 40px;
     text-align: center;
-    font-size: 10px;
+    font-size: 11px;
 }
 
 .back {
@@ -199,7 +225,7 @@ body {
 }
 
 .sail:before {
-    content: "";
+    content: '';
     display: block;
     position: absolute;
     top: 0px;
@@ -213,7 +239,7 @@ body {
 }
 
 .sail::after {
-    content: "";
+    content: '';
     display: block;
     position: absolute;
     top: 0px;
@@ -284,7 +310,7 @@ body {
 
 @keyframes fish {
     from {
-        right: 0%;
+        right: -20%;
     }
     to {
         right: 110%;
@@ -299,81 +325,136 @@ body {
     }
 }
 
-.coimbatore .middle {
- background: #b4b934;
-}
+.coimbatore {
+    .middle {
+        background: #b4b934;
+    }
 
-.coimbatore .front {
-    border-color: #b4b934 #b4b934 transparent transparent;
-}
+    .front {
+        border-color: #b4b934 #b4b934 transparent transparent;
+    }
 
+    .back {
+        border-color: #b4b934 transparent transparent #b4b934;
+    }
 
-.coimbatore .back {
-    border-color: #b4b934 transparent transparent #b4b934;
-}
-
-
-.bangalore .middle {
-    background: #f68e31;
-}
-
-.bangalore .front {
-    border-color: #f68e31 #f68e31 transparent transparent;
-}
-
-.bangalore .back {
-    border-color: #f68e31 transparent transparent #f68e31;
-}
+    .cls-1,
+    .cls-2,
+    .cls-3,
+    .cls-6 {
+        fill: #b4b934;
+    }
+} 
 
 
-.hyderabad .middle {
-    background: #ef5aa0;
-}
 
-.hyderabad .front {
-    border-color: #ef5aa0 #ef5aa0 transparent transparent;
-}
 
-.hyderabad .back {
-    border-color: #ef5aa0 transparent transparent #ef5aa0;
-}
 
-.chennai .middle {
-    background: #1972ba;
-}
+.bangalore {
+    .middle {
+        background: #f68e31;
+    }
 
-.chennai .front {
-    border-color: #1972ba #1972ba transparent transparent;
-}
+    .front {
+        border-color: #f68e31 #f68e31 transparent transparent;
+    }
 
-.chennai .back {
-    border-color: #1972ba transparent transparent #1972ba;
+    .back {
+        border-color: #f68e31 transparent transparent #f68e31;
+    }
+
+    .cls-1,
+    .cls-2,
+    .cls-3,
+    .cls-6 {
+        fill: #f68e31;
+    }
 }
 
 
-.pune .middle {
-    background: #9e775f;
+.hyderabad {
+    .middle {
+        background: #ef5aa0;
+    }
+
+    .front {
+        border-color: #ef5aa0 #ef5aa0 transparent transparent;
+    }
+
+    .back {
+        border-color: #ef5aa0 transparent transparent #ef5aa0;
+    }
+
+    .cls-1,
+    .cls-2,
+    .cls-3,
+    .cls-6 {
+        fill: #ef5aa0;
+    }
+    
 }
 
-.pune .front {
-    border-color: #9e775f #9e775f transparent transparent;
+
+.chennai {
+    .middle {
+        background: #1972ba;
+    }
+
+    .front {
+        border-color: #1972ba #1972ba transparent transparent;
+    }
+
+    .back {
+        border-color: #1972ba transparent transparent #1972ba;
+    }
+
+    .cls-1,
+    .cls-2,
+    .cls-3,
+    .cls-6 {
+        fill: #1972ba;
+    }
+    
 }
 
-.pune .back {
-    border-color: #9e775f transparent transparent #9e775f;
+
+.pune {
+    .middle {
+        background: #9e775f;
+    } 
+    .front {
+        border-color: #9e775f #9e775f transparent transparent;
+    }  
+    .back {
+        border-color: #9e775f transparent transparent #9e775f;
+    }
+
+    .cls-1,
+    .cls-2,
+    .cls-3,
+    .cls-6 {
+        fill: #9e775f;
+    }
 }
 
+.gurgaon {
+    .middle {
+        background: #692469;
+    }  
 
-.gurgaon .middle {
-    background: #692469;
-}
+    .front {
+        border-color: #692469 #692469 transparent transparent;
+    }
+    .back {
+        border-color: #692469 transparent transparent #692469;
+    }
 
-.gurgaon .front {
-    border-color: #692469 #692469 transparent transparent;
-}
-
-.gurgaon .back {
-    border-color: #692469 transparent transparent #692469;
+    .cls-1,
+    .cls-2,
+    .cls-3,
+    .cls-6 {
+        fill: #692469;
+    }
 }
 
 .cloud {
@@ -453,4 +534,10 @@ body {
 .cls-1{fill:#5e4231;}
 .cls-2{fill:#eee7b6;}
 .cls-3{fill:#fefad2;}
+.cls-4{fill:#cce0f1;}
+.cls-5{font-size:26px;}
+.cls-7{font-size:26px;fill:#fff;}
+
+
+
 

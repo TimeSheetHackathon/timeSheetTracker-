@@ -14,12 +14,14 @@ app.directive("boat", function () {
 
             var unscaled = (100 - scope.record.missingTimeSheetPercentage);
 
-            var scaled = scaleBetween(unscaled, 50, oceanHeight, scope.record.minRange, scope.record.maxRange);
+            var scaled = scaleBetween(unscaled, 80, oceanHeight, scope.record.minRange, scope.record.maxRange);
             var topValue = oceanHeight - Math.floor(scaled);
 
             $(element[0]).css("top", topValue);
             if(topValue > 50){
                 $(element[0]).css("transform", "rotate(12deg)");
+                $(element[0]).css("animation", "none");
+
             }
 
         },
