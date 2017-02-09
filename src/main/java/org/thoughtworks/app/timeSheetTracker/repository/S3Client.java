@@ -49,20 +49,20 @@ public class S3Client {
 
   private final static Logger logger = LoggerFactory.getLogger(S3Client.class);
 
-  @Cacheable("timeSheetFileForLastWeek")
+
   public List<MissingTimeSheetData> getTimeSheetDataForLastWeek() {
     final String filePrefix = env.getProperty("cloud.aws.weekly.timesheet.file.prefix");
     return fetchFileFromAWS().andThen(parseMissingTimeSheetData()).apply(filePrefix);
   }
 
-  @Cacheable("employeesNamesOfMissingTimeSheet")
+
   public List<MissingTimeSheetData> getTimeSheetDataForProjectLastWeek() {
     final String filePrefix =
         env.getProperty("cloud.aws.weekly.project.timeseet.mising.file.prefix");
     return fetchFileFromAWS().andThen(parseMissingTimeSheetData()).apply(filePrefix);
   }
 
-  @Cacheable("totalEmployees")
+
   public List<Employee> getAllEmployees(){
     final String filePrefix = env.getProperty("cloud.aws.weekly.total.employees.file.prefix");
     return fetchFileFromAWS().andThen(parseEmployeeData()).apply(filePrefix);
