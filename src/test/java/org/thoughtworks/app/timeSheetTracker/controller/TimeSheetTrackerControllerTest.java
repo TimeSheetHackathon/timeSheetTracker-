@@ -69,4 +69,12 @@ public class TimeSheetTrackerControllerTest {
                 .getEmployeesNamesForAProject("Bangalore","Kroger");
 
     }
+
+    @Test
+    public void testGetAllCountry() throws Exception {
+        mockMvc.perform(get("/getAllCountry")).andExpect(status().isOk());
+
+        verify(timeSheetService, times(1))
+            .getCountries();
+    }
 }

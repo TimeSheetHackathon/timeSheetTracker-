@@ -6,10 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.thoughtworks.app.timeSheetTracker.contract.Employee;
-import org.thoughtworks.app.timeSheetTracker.contract.MissingTimeSheetCount;
-import org.thoughtworks.app.timeSheetTracker.contract.MissingTimeSheetCountForProject;
-import org.thoughtworks.app.timeSheetTracker.contract.MissingTimeSheetPercentage;
+import org.thoughtworks.app.timeSheetTracker.contract.*;
 import org.thoughtworks.app.timeSheetTracker.models.MissingTimeSheetData;
 import org.thoughtworks.app.timeSheetTracker.repository.PeopleCounter;
 import org.thoughtworks.app.timeSheetTracker.repository.S3Client;
@@ -19,7 +16,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.groupingBy;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 
@@ -204,5 +205,37 @@ public class TimeSheetServiceTest {
         assertEquals("M,Gayathri", employeesNames.get(1).getName());
         assertEquals(new Integer(3), employeesNames.get(1).getId());
 
+    }
+
+    @Test
+    public void shouldReturnCountry() throws Exception {
+        List<org.thoughtworks.app.timeSheetTracker.models.Employee> employees = Arrays.asList(
+            org.thoughtworks.app.timeSheetTracker.models.Employee.builder()
+                .employeeId("1")
+                .employeeName("M,Gayathri")
+                .country("INDIA")
+                .workingLocation("BANGALORE")
+                .build(),
+            org.thoughtworks.app.timeSheetTracker.models.Employee.builder()
+                .employeeId("2")
+                .employeeName("Sharma,Nishkarsh")
+                .country("INDIA")
+                .workingLocation("PUNE")
+                .build(),
+            org.thoughtworks.app.timeSheetTracker.models.Employee.builder()
+                .employeeId("3")
+                .employeeName("Sao Paulo")
+                .country("US")
+                .workingLocation("sf")
+                .build()
+        );
+
+
+        when(client.getAllEmployees()).thenReturn(employees);
+        List<Country> countries = timeSheetService.getCountries();
+        assertEquals(2, countries.size());
+        assertEquals("INDIA",countries.get(1).getName());
+        assertThat(countries.get(1).getCities(), hasItems("BANGALORE","PUNE"));
+        assertEquals("US",countries.get(0).getName());
     }
 }

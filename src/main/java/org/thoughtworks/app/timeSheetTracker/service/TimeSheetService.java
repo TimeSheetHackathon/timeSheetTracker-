@@ -1,20 +1,18 @@
 package org.thoughtworks.app.timeSheetTracker.service;
 
+import com.amazonaws.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.thoughtworks.app.timeSheetTracker.contract.*;
 import org.thoughtworks.app.timeSheetTracker.contract.Employee;
-import org.thoughtworks.app.timeSheetTracker.contract.MissingTimeSheetCount;
-import org.thoughtworks.app.timeSheetTracker.contract.MissingTimeSheetCountForProject;
-import org.thoughtworks.app.timeSheetTracker.contract.MissingTimeSheetPercentage;
-import org.thoughtworks.app.timeSheetTracker.models.MissingTimeSheetData;
+import org.thoughtworks.app.timeSheetTracker.models.*;
 import org.thoughtworks.app.timeSheetTracker.repository.PeopleCounter;
 import org.thoughtworks.app.timeSheetTracker.repository.S3Client;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static java.lang.String.valueOf;
 import static java.util.stream.Collectors.*;
@@ -27,6 +25,7 @@ public class TimeSheetService {
 
   @Autowired
   private PeopleCounter peopleCounter;
+
 
   public List<MissingTimeSheetCount> getMissingTimeSheetCountForOfficesInCountry(String country) {
     return getMissingTimeSheet(s3Client.getTimeSheetDataForLastWeek(),
@@ -84,6 +83,24 @@ public class TimeSheetService {
             .build())
         .distinct()
         .collect(toList());
+  }
+
+
+  public List<Country> getCountries() {
+    return s3Client.getAllEmployees().stream()
+        .collect(Collectors.groupingBy(emp -> emp.getCountry(),
+            Collectors.groupingBy(emp -> emp.getWorkingLocation())))
+        .entrySet().stream()
+        .map(country -> Country.builder()
+            .name(country.getKey())
+            .cities(new ArrayList<>(country.getValue().keySet()))
+            .build())
+        .filter(isNULLString().negate())
+        .collect(toList());
+  }
+
+  private Predicate<Country> isNULLString() {
+    return country -> country.getName().toUpperCase().equals("NULL");
   }
 
   private Predicate<MissingTimeSheetData> matchCity(String city) {
