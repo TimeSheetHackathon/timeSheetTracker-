@@ -185,15 +185,6 @@ public class TimeSheetServiceTest {
     }
 
     @Test
-    public void testGetEmployeesNamesForACity() throws Exception {
-        when(client.getTimeSheetDataForProjectLastWeek()).thenReturn(result);
-        List<Employee> employeesNames = timeSheetService.getEmployeesNamesForACity("Bangalore");
-        assertEquals(1, employeesNames.size());
-        assertEquals("M,Gayathri",employeesNames.get(0).getName());
-        assertEquals(new Integer(1), employeesNames.get(0).getId());
-    }
-
-    @Test
     public void shouldReturnUniqueEmployeesNamesForACity() throws Exception {
         when(client.getTimeSheetDataForProjectLastWeek()).thenReturn(duplicateData);
         List<Employee> employeesNames = timeSheetService.getEmployeesNamesForACity("Bangalore");

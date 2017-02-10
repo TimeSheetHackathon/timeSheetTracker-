@@ -63,7 +63,7 @@ public class S3Client {
   }
 
 
-  public List<Employee> getAllEmployees(){
+  public List<Employee> getAllEmployees() {
     final String filePrefix = env.getProperty("cloud.aws.weekly.total.employees.file.prefix");
     return fetchFileFromAWS().andThen(parseEmployeeData()).apply(filePrefix);
   }
@@ -86,29 +86,28 @@ public class S3Client {
   }
 
   private Function<InputStream, List<Employee>> parseEmployeeData() {
-      return input -> {
-        try {
-          return new JSONArray(IOUtils.toString(input)).toList().stream()
-              .map(e-> {
-                Map employee = mapper.convertValue(e, Map.class);
-                return Employee.builder()
-                    .employeeId(valueOf(employee.getOrDefault("id","")))
-                    .employeeName(valueOf(employee.getOrDefault("name","")))
-                    .role(valueOf(employee.getOrDefault("role","")).toUpperCase())
-                    .country(valueOf(employee.getOrDefault("country","")).toUpperCase())
-                    .workingLocation(valueOf(employee.getOrDefault("working-office","")).toUpperCase())
-                    .build();
-              })
-              .collect(toList());
-        } catch (IOException e) {
-          logger.info(e.getMessage());
-        }
-        return emptyList();
-      };
+    return input -> {
+      try {
+        return new JSONArray(IOUtils.toString(input)).toList().stream()
+            .map(e -> {
+              Map employee = mapper.convertValue(e, Map.class);
+              return Employee.builder()
+                  .employeeId(valueOf(employee.getOrDefault("id", "")))
+                  .employeeName(valueOf(employee.getOrDefault("name", "")))
+                  .role(valueOf(employee.getOrDefault("role", "")).toUpperCase())
+                  .country(valueOf(employee.getOrDefault("country", "")).toUpperCase())
+                  .workingLocation(valueOf(employee.getOrDefault("working-office", "")).toUpperCase())
+                  .build();
+            })
+            .collect(toList());
+      } catch (IOException e) {
+        logger.info(e.getMessage());
+      }
+      return emptyList();
+    };
   }
 
   private Function<InputStream, List<MissingTimeSheetData>> parseMissingTimeSheetData() {
-    DateTime today = new DateTime();
     return input -> {
       try {
         return new JSONArray(IOUtils.toString(input)).toList().stream()
@@ -125,15 +124,14 @@ public class S3Client {
                   .date(new DateTime())
                   .build();
             })
-            .collect(partitioningBy(e->validateEmployee().test(e)))
-              .get(true);
+            .collect(partitioningBy(e -> validateEmployee().test(e)))
+            .get(true);
       } catch (IOException e) {
         logger.info(e.getMessage());
       }
       return emptyList();
     };
   }
-
 
 
   private Predicate<MissingTimeSheetData> validateEmployee() {
