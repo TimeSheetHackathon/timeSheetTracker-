@@ -23,7 +23,7 @@ public class MondaySnapShot {
   @Autowired
   private MissingTimeSheetDataRepository missingTimeSheetDataRepository;
 
-  @Scheduled(cron="0 0 2 ? * TUE *")
+  @Scheduled(cron="0 0 2 ? * TUE")
   public void reportCurrentTime(){
     List<MissingTimeSheetData> timeSheetData =
         s3Client.getTimeSheetDataForProjectLastWeek();
@@ -31,7 +31,7 @@ public class MondaySnapShot {
     missingTimeSheetDataRepository.save(timeSheetData);
   }
 
-  @Scheduled(cron ="0 0 1 1/1 * ? *")
+  @Scheduled(cron ="0 0 1 1/1 * ?")
   public void cleanUpOldData() {
     DateTime date = new DateTime().minusMonths(2);
     List<MissingTimeSheetData> missingTimeSheetDatas =
