@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700");
 html {
-  font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif; }
+  font-family: "Open Sans", sans-serif; }
 
 .carousel-wrapper {
   float: left;
@@ -9,8 +9,9 @@ html {
   height: 100%; }
   .carousel-wrapper h2 {
     font-size: 22px;
-    padding: 20px 0 0;
-    text-align: center; }
+    padding: 20px 0 35px;
+    text-align: center;
+    color: #ff0000; }
 
 .carousel-wrapper .carousel-inner {
   height: 700px; }
@@ -35,10 +36,9 @@ html {
   padding-top: 10px;
   padding-bottom: 10px;
   padding-right: 20px;
-  font-size: x-large;
-  font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
-  border-bottom: 1px solid #ccc;
-  font-weight: 300;
+  font-size: 28px;
+  border-bottom: 1px solid #fff;
+  font-weight: 400;
   text-align: center; }
 
 .carousel-indicators .active {
@@ -66,6 +66,9 @@ html {
 
 #stat-area {
   padding-left: 50px; }
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  background-image: none; }
 
 /**/
 body,
@@ -152,9 +155,11 @@ body {
 .boat-label {
   position: absolute;
   right: 30px;
-  top: -23px;
+  top: -33px;
+  color: #2d1a16;
   z-index: 99;
-  font-size: 13px; }
+  font-size: 18px;
+  font-weight: bold; }
 
 .front {
   position: absolute;
@@ -413,10 +418,12 @@ body {
 
 .timesheet-title {
   font-size: 21px;
-  line-height: 21px; }
+  line-height: 21px;
+  font-weight: 600; }
 
 .timesheet-title span {
-  font-size: 30px; }
+  font-size: 30px;
+  font-weight: 800; }
 
 .sail-new {
   position: absolute;
