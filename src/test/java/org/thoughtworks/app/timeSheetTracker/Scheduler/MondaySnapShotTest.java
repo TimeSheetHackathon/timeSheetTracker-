@@ -16,11 +16,14 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 
-@SpringBootTest
+@SpringBootTest(properties = {"spring.data.mongodb.database=demo-test",
+    "spring.data.mongodb.username=test",
+    "spring.data.mongodb.password=test"})
 @RunWith(SpringJUnit4ClassRunner.class)
 
 public class MondaySnapShotTest {
   private List<MissingTimeSheetData> timeSheetData;
+
 
   @Autowired
   private MissingTimeSheetDataRepository missingTimeSheetDataRepository;
@@ -49,8 +52,8 @@ public class MondaySnapShotTest {
             .employeeName("current")
             .date(new DateTime(2017,2,7,0,0)).build()
     );
-
   }
+
 
   @Test
   public void shouldSaveDateInMongoDB() throws Exception {

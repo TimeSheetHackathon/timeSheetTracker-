@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.thoughtworks.app.timeSheetTracker.models.MissingTimeSheetData;
@@ -13,6 +14,7 @@ import org.thoughtworks.app.timeSheetTracker.repository.S3Client;
 import java.util.List;
 
 @Component
+
 public class MondaySnapShot {
   @Autowired
   private S3Client s3Client;
@@ -21,7 +23,7 @@ public class MondaySnapShot {
   @Autowired
   private MissingTimeSheetDataRepository missingTimeSheetDataRepository;
 
-  @Scheduled(cron = "0 0 1 * * TUE")
+  @Scheduled(cron="0 0 2 ? * TUE *")
   public void reportCurrentTime(){
     List<MissingTimeSheetData> timeSheetData =
         s3Client.getTimeSheetDataForProjectLastWeek();
@@ -29,7 +31,7 @@ public class MondaySnapShot {
     missingTimeSheetDataRepository.save(timeSheetData);
   }
 
-  @Scheduled(cron ="0 0 1 * * SUN-MON")
+  @Scheduled(cron ="0 0 1 1/1 * ? *")
   public void cleanUpOldData() {
     DateTime date = new DateTime().minusMonths(2);
     List<MissingTimeSheetData> missingTimeSheetDatas =
