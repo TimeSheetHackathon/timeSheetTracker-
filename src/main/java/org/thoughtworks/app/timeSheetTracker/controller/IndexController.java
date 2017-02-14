@@ -21,4 +21,9 @@ public class IndexController {
         return "index";
     }
 
+    @RequestMapping("/")
+    public String getCountryPage() {
+        return "country";
+    }
+
 }

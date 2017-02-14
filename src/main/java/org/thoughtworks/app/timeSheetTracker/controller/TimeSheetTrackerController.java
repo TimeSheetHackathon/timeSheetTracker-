@@ -51,8 +51,8 @@ public class TimeSheetTrackerController {
     }
 
     @RequestMapping("/getAllCountry")
-    public List<Country> getAllCountry(){
-        return timeSheetService.getCountries();
+    public List<MissingTimeSheetPercentage> getAllCountry(){
+        return timeSheetService.getEntireTimeSheetMissingPercentage();
     }
 
 }

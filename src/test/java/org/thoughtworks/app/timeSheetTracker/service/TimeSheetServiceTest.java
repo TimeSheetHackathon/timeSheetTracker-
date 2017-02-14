@@ -238,4 +238,10 @@ public class TimeSheetServiceTest {
         assertThat(countries.get(1).getCities(), hasItems("BANGALORE","PUNE"));
         assertEquals("US",countries.get(0).getName());
     }
+
+    @Test
+    public void testGetEntireTimeSheetMissingPercentage(){
+        when(client.getTimeSheetDataForLastWeek()).thenReturn(result);
+        timeSheetService.getEntireTimeSheetMissingPercentage();
+    }
 }

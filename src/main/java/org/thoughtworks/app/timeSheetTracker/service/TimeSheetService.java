@@ -99,6 +99,21 @@ public class TimeSheetService {
         .collect(toList());
   }
 
+  public List<MissingTimeSheetPercentage> getEntireTimeSheetMissingPercentage() {
+    List<MissingTimeSheetData> timeSheetDataForLastWeek = s3Client.getTimeSheetDataForLastWeek();
+    Map<String, Long> countryWithMissingTimeSheetCount =
+        timeSheetDataForLastWeek.stream().collect(groupingBy(MissingTimeSheetData::getCountry, counting()));
+
+    return peopleCounter.getAllPeopleCountCountryWise()
+        .keySet().stream()
+        .map(country->MissingTimeSheetPercentage.builder()
+        .workingLocation(country)
+        .missingTimeSheetPercentage(calculatePercentageForCountry(countryWithMissingTimeSheetCount, country))
+        .build())
+        .sorted(Comparator.comparingInt(MissingTimeSheetPercentage::getMissingTimeSheetPercentage))
+        .collect(toList());
+  }
+
   private Predicate<Country> isNULLString() {
     return country -> country.getName().toUpperCase().equals("NULL");
   }
@@ -128,6 +143,12 @@ public class TimeSheetService {
     Long missingTimeSheetCount = cityWithMissingTimeSheetCount.get(city);
     return missingTimeSheetCount == null ? 0 :
         missingTimeSheetCount.intValue() * 100 / peopleCounter.getPeopleCount(country).get(city).intValue();
+  }
+
+  private Integer calculatePercentageForCountry(Map<String, Long> missingTimeSheetCountForCountries, String country) {
+    Long missingTimeSheetCount = missingTimeSheetCountForCountries.get(country);
+    return missingTimeSheetCount == null ? 0 :
+        missingTimeSheetCount.intValue() * 100 / peopleCounter.getAllPeopleCountCountryWise().get(country).intValue();
   }
 
 

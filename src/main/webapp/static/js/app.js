@@ -4,10 +4,12 @@ app.controller("timesheetController", function ($scope, $http) {
 
     $scope.missingTimeSheetPercentageData = "";
     $scope.listOfDefaulters = "";
+    $scope.allCountries = "";
     $scope.init = initialize;
     var city = $.cookie('city');
 
     function initialize() {
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         //To get the timesheet percentage data for all the cities in India
         $http({
             method: 'GET',
@@ -26,6 +28,17 @@ app.controller("timesheetController", function ($scope, $http) {
         }).then(function successCallback(response) {
             $scope.listOfDefaulters = response.data;
             $scope.defaulterDataHasLoaded = true;
+        }, function errorCallback(response) {
+            alert("Oops! Something went wrong...")
+        });
+
+        $http({
+            method: 'GET',
+            url: '/getAllCountry'
+        }).then(function successCallback(response) {
+            console.log(")))))))))))))))))))))))))))))))))))))))))))))))");
+            $scope.allCountries = response.data;
+            $scope.countriesGotLoaded = true;
         }, function errorCallback(response) {
             alert("Oops! Something went wrong...")
         });

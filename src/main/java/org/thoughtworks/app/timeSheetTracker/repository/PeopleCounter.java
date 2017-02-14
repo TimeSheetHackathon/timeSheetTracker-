@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.thoughtworks.app.timeSheetTracker.models.Employee;
+import org.thoughtworks.app.timeSheetTracker.models.MissingTimeSheetData;
 
 import java.util.Map;
 import java.util.function.Predicate;
@@ -29,6 +30,14 @@ public class PeopleCounter {
     logger.info(String.format("employee count  by city for the country %s is %s", country, employeeByCity));
 
     return employeeByCity;
+  }
+
+  public Map<String, Long> getAllPeopleCountCountryWise() {
+    Map<String, Long> peopleCountByCountry = s3Client.getAllEmployees().stream()
+        .distinct()
+        .collect(groupingBy(Employee::getCountry, counting()));
+    logger.info(String.format("country by country is%s",peopleCountByCountry));
+    return peopleCountByCountry;
   }
 
   private Predicate<Employee> matchCountry(String country) {
