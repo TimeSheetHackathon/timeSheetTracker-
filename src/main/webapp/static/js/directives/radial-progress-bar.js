@@ -29,6 +29,7 @@ app.directive("radial", function ($parse) {
                     .innerRadius(radius)
                     .outerRadius(radius - border);
 
+                var city = scope.data[i].workingLocation;
                 var parent = d3.select(element[0]);
 
                 var svg = parent.append('svg')
@@ -41,13 +42,18 @@ app.directive("radial", function ($parse) {
                     .attr('transform', 'translate(' + boxSize / 2 + ',' + boxSize / 2 + ')');
 
                 var meter = g.append('g')
-                    .attr('class', 'progress-meter');
+                    .attr('class', 'progress-meter')
+                    .attr('id',city)
+                    .on('click',function () {
+                        window.location = this.id;
+                    });
 
                 meter.append('path')
                     .attr('class', 'background')
                     .attr('fill', '#ccc')
                     .attr('fill-opacity', 0.5)
                     .attr('d', arc.endAngle(twoPi));
+
 
                 var colorSelected =  getColorForPercentage(endPercent);
 
@@ -81,7 +87,7 @@ app.directive("radial", function ($parse) {
                 foreground.attr('d', arc.endAngle(twoPi * progress));
                 front.attr('d', arc.endAngle(twoPi * progress));
                 numberText.text(formatPercent(progress));
-                cityText.text(scope.data[i].workingLocation);
+                cityText.text(city);
             }
         }
     }
