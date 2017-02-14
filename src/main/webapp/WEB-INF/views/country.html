@@ -28,13 +28,11 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-4 right-panel">
-            <div class="panel-title">
-                <b>DEFAULTERS</b>
-            </div>
-            <div>
-                <defaulter data="allCountries" ng-if="countriesGotLoaded"></defaulter>
-            </div>
+        <div class="panel-title">
+            <b>TIMESHEETS FILLED PERCENTAGE</b>
+        </div>
+        <div id="stat-area">
+            <radial chart-data="allCountries" ng-if="countriesGotLoaded"></radial>
         </div>
     </div>
 </div>
