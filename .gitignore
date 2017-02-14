@@ -3,3 +3,5 @@
 build/
 .target
 .timeSheetTracker.iml
+out/test/
+awscli-bundle/
