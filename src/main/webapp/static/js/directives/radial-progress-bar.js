@@ -45,7 +45,12 @@ app.directive("radial", function ($parse) {
                     .attr('class', 'progress-meter')
                     .attr('id',city)
                     .on('click',function () {
-                        window.location = this.id;
+                        var queryParams = window.location.pathname.split('/');
+                        if(!queryParams[1])
+                            window.location = '/' + this.id;
+                        else{
+                            window.location = '/' + queryParams[1] + "/" + this.id;
+                        }
                     });
 
                 meter.append('path')

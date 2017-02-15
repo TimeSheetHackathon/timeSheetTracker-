@@ -15,9 +15,17 @@ public class IndexController {
      * Controller for Index Page.
      * @return Index.html
      */
-    @RequestMapping("/{city}")
-    public String getIndexPage(@PathVariable("city") String city, HttpServletResponse response) {
+
+    @RequestMapping("/{country}/{city}")
+    public String getIndexPage(@PathVariable("country") String country, @PathVariable("city") String city, HttpServletResponse response) {
         response.addCookie(new Cookie("city", city));
+        response.addCookie(new Cookie("country", country));
+        return "index";
+    }
+
+    @RequestMapping("/{country}")
+    public String getIndexPage(@PathVariable("country") String country, HttpServletResponse response) {
+        response.addCookie(new Cookie("country", country));
         return "index";
     }
 

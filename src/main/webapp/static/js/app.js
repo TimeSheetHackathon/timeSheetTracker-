@@ -7,13 +7,13 @@ app.controller("timesheetController", function ($scope, $http) {
     $scope.allCountries = "";
     $scope.init = initialize;
     var city = $.cookie('city');
+    var country = $.cookie('country');
 
     function initialize() {
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         //To get the timesheet percentage data for all the cities in India
         $http({
             method: 'GET',
-            url: 'india/missingTimeSheetPercentage'
+            url: '/' + country  +'/missingTimeSheetPercentage'
         }).then(function successCallback(response) {
             $scope.missingTimeSheetPercentageData = response.data;
             $scope.dataHasLoaded = true;
@@ -36,7 +36,6 @@ app.controller("timesheetController", function ($scope, $http) {
             method: 'GET',
             url: '/getAllCountry'
         }).then(function successCallback(response) {
-            console.log(")))))))))))))))))))))))))))))))))))))))))))))))");
             $scope.allCountries = response.data;
             $scope.countriesGotLoaded = true;
         }, function errorCallback(response) {
