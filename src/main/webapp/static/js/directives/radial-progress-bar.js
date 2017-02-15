@@ -44,6 +44,7 @@ app.directive("radial", function ($parse) {
                 var meter = g.append('g')
                     .attr('class', 'progress-meter')
                     .attr('id',city)
+                    .style("cursor","hand")
                     .on('click',function () {
                         var queryParams = window.location.pathname.split('/');
                         if(!queryParams[1])
