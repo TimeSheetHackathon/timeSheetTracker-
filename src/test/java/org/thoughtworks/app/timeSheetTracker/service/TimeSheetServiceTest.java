@@ -6,7 +6,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.thoughtworks.app.timeSheetTracker.contract.*;
+import org.thoughtworks.app.timeSheetTracker.contract.Employee;
+import org.thoughtworks.app.timeSheetTracker.contract.MissingTimeSheetCount;
+import org.thoughtworks.app.timeSheetTracker.contract.MissingTimeSheetCountForProject;
+import org.thoughtworks.app.timeSheetTracker.contract.MissingTimeSheetPercentage;
 import org.thoughtworks.app.timeSheetTracker.models.MissingTimeSheetData;
 import org.thoughtworks.app.timeSheetTracker.repository.PeopleCounter;
 import org.thoughtworks.app.timeSheetTracker.repository.S3Client;
@@ -16,11 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.groupingBy;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 
@@ -38,6 +37,7 @@ public class TimeSheetServiceTest {
 
     private List<MissingTimeSheetData> result,duplicateData, differentIdEmployees;
     private Map employeeCount;
+    private Map countries;
 
     @Before
     public void setUp() throws Exception {
@@ -122,6 +122,13 @@ public class TimeSheetServiceTest {
                         .projectName("KROGER")
                         .build()
         );
+
+
+        countries = new HashMap<>();
+        countries.put("UK",new Long(3));
+        countries.put("INDIA",new Long(4));
+        countries.put("US",new Long(2));
+
     }
 
     @Test
@@ -208,40 +215,15 @@ public class TimeSheetServiceTest {
     }
 
     @Test
-    public void shouldReturnCountry() throws Exception {
-        List<org.thoughtworks.app.timeSheetTracker.models.Employee> employees = Arrays.asList(
-            org.thoughtworks.app.timeSheetTracker.models.Employee.builder()
-                .employeeId("1")
-                .employeeName("M,Gayathri")
-                .country("INDIA")
-                .workingLocation("BANGALORE")
-                .build(),
-            org.thoughtworks.app.timeSheetTracker.models.Employee.builder()
-                .employeeId("2")
-                .employeeName("Sharma,Nishkarsh")
-                .country("INDIA")
-                .workingLocation("PUNE")
-                .build(),
-            org.thoughtworks.app.timeSheetTracker.models.Employee.builder()
-                .employeeId("3")
-                .employeeName("Sao Paulo")
-                .country("US")
-                .workingLocation("sf")
-                .build()
-        );
-
-
-        when(client.getAllEmployees()).thenReturn(employees);
-        List<Country> countries = timeSheetService.getCountries();
-        assertEquals(2, countries.size());
-        assertEquals("INDIA",countries.get(1).getName());
-        assertThat(countries.get(1).getCities(), hasItems("BANGALORE","PUNE"));
-        assertEquals("US",countries.get(0).getName());
-    }
-
-    @Test
     public void testGetEntireTimeSheetMissingPercentage(){
         when(client.getTimeSheetDataForLastWeek()).thenReturn(result);
-        timeSheetService.getEntireTimeSheetMissingPercentage();
+        when(peopleCounter.getAllPeopleCountCountryWise()).thenReturn(countries);
+        List<MissingTimeSheetPercentage> countryPercentage = timeSheetService.getEntireTimeSheetMissingPercentage();
+        assertEquals(3, countryPercentage.size());
+        assertEquals("UK", countryPercentage.get(0).getWorkingLocation());
+        assertEquals(new Integer(0),countryPercentage.get(0).getMissingTimeSheetPercentage());
+        assertEquals("INDIA", countryPercentage.get(1).getWorkingLocation());
+        assertEquals(new Integer(50), countryPercentage.get(1).getMissingTimeSheetPercentage());
+
     }
 }
