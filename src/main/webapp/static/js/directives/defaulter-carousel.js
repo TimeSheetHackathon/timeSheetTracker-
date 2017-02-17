@@ -96,10 +96,11 @@ app.directive("defaulter", function ($parse) {
             });
 
             var parent = d3.select(element[0]);
-            if(scope.data.length>0)
-                renderCarousel(parent, scope);
-            else
-                showMessage(parent);
-            }
+            var path = window.location.pathname.split("/");
+
+            if(scope.data.length == 0 && path.length>2)
+                return showMessage(parent);
+            return renderCarousel(parent, scope);
+        }
     }
 });
