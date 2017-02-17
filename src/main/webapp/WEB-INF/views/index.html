@@ -17,6 +17,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/app.css">
     <script src="/static/js/app.js"></script>
+    <script src="/static/js/directives/country-name.js"></script>
     <script src="/static/js/directives/radial-progress-bar.js"></script>
     <script src="/static/js/directives/defaulter-carousel.js"></script>
 </head>
@@ -26,23 +27,27 @@
         <h1 class="navbar-brand mb-0">TIMESHEET TRACKER</h1>
     </a>
 </nav>
-
-<div class="container">
-    <div class="row">
-        <div class="col-8 left-panel">
-            <div class="panel-title">
-                <b>TIMESHEETS FILLED PERCENTAGE</b>
+<div class="main">
+    <div class="countryName">
+        <country></country>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-8 left-panel">
+                <div class="panel-title">
+                    <b>TIMESHEETS FILLED PERCENTAGE</b>
+                </div>
+                <div id="stat-area">
+                    <radial chart-data="missingTimeSheetPercentageData" ng-if="dataHasLoaded"></radial>
+                </div>
             </div>
-            <div id="stat-area">
-                <radial chart-data="missingTimeSheetPercentageData" ng-if="dataHasLoaded"></radial>
-            </div>
-        </div>
-        <div class="col-4 right-panel">
-            <div class="panel-title">
-                <b>DEFAULTERS</b>
-            </div>
-            <div>
-                <defaulter data="listOfDefaulters" ng-if="defaulterDataHasLoaded"></defaulter>
+            <div class="col-4 right-panel">
+                <div class="panel-title">
+                    <b>DEFAULTERS</b>
+                </div>
+                <div>
+                    <defaulter data="listOfDefaulters" ng-if="defaulterDataHasLoaded"></defaulter>
+                </div>
             </div>
         </div>
     </div>
