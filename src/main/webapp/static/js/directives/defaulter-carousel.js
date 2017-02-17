@@ -74,9 +74,9 @@ var renderCarousel = function (parent,scope) {
 };
 
 var showMessage = function(parent){
-    parent.append("div")
+    var childDiv = parent.append("div")
         .attr('class','message')
-        .text("Congratulation!!! Office has filled 100% timesheet");
+        .text("Congratulation!!!😃 Office has filled 100% timesheet");
 };
 
 app.directive("defaulter", function ($parse) {
