@@ -76,15 +76,11 @@ html{
     padding-left: 50px;
 }
 
-.container{
-    display: inline-block;
-}
-
 .countryName{
     width:200px;
     position: absolute;
     text-align: center;
     font-size: x-large;
     font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-weight: 300;
+    font-weight: 500;
 }
