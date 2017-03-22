@@ -24,7 +24,10 @@ targetCompatibility = 1.8
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
 }
-
+jar {
+    baseName = 'gs-scheduling-tasks'
+    version =  '0.1.0'
+}
 repositories {
     mavenCentral()
 }
@@ -32,11 +35,14 @@ repositories {
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version:'1.4.3.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: '1.5.1.RELEASE'
+    compile group: 'org.springframework.boot', name:'spring-boot-starter-cache'
     compile group: 'com.amazonaws', name: 'aws-java-sdk', version:'1.11.80'
     compile group: 'org.apache.commons', name: 'commons-io', version:'1.3.2'
     compile group: 'org.json', name: 'json', version:'20160810'
     compile group: 'org.projectlombok', name:'lombok', version: '1.16.12'
+    compile 'com.github.ben-manes.caffeine:caffeine'
     compile "com.github.ulisesbocchio:jasypt-spring-boot-starter:1.11"
+
     testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version:'1.4.3.RELEASE') {
         exclude(module: 'commons-logging')
     }

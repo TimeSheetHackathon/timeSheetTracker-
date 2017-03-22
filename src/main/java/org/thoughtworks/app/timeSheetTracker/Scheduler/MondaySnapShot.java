@@ -10,10 +10,12 @@ import org.springframework.stereotype.Component;
 import org.thoughtworks.app.timeSheetTracker.models.MissingTimeSheetData;
 import org.thoughtworks.app.timeSheetTracker.repository.MissingTimeSheetDataRepository;
 import org.thoughtworks.app.timeSheetTracker.repository.S3Client;
+import org.thoughtworks.app.timeSheetTracker.service.TimeSheetService;
 
 import java.util.List;
 
 @Component
+@EnableScheduling
 
 public class MondaySnapShot {
   @Autowired
@@ -37,6 +39,16 @@ public class MondaySnapShot {
     List<MissingTimeSheetData> missingTimeSheetDatas =
         missingTimeSheetDataRepository.removeByDate(date);
     logger.debug(String.valueOf(missingTimeSheetDatas));
+  }
+
+  // Time in milliSeconds
+  @Scheduled(fixedRate = 630000)
+  public void cacheData(){
+
+    logger.info("********* fetching Cache ***********");
+  s3Client.getAllEmployees();
+  s3Client.getTimeSheetDataForLastWeek();
+  s3Client.getTimeSheetDataForProjectLastWeek();
   }
 
 }
