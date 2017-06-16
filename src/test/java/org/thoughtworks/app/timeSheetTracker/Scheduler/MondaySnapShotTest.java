@@ -2,6 +2,7 @@ package org.thoughtworks.app.timeSheetTracker.Scheduler;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class MondaySnapShotTest {
     );
   }
 
-
+  @Ignore
   @Test
   public void shouldSaveDateInMongoDB() throws Exception {
     missingTimeSheetDataRepository.deleteAll();
@@ -63,6 +64,7 @@ public class MondaySnapShotTest {
 
   }
 
+  @Ignore
   @Test
   public void shouldDeleteDataBeforeThreeMonths() throws Exception {
     missingTimeSheetDataRepository.deleteAll();
