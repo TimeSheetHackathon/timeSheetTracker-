@@ -10,6 +10,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.thoughtworks.app.timeSheetTracker.service.TimeSheetService;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -32,6 +35,15 @@ public class TimeSheetTrackerControllerTest {
 
         verify(timeSheetService, times(1))
                 .getMissingTimeSheetCountForOfficesInCountry("India");
+    }
+
+    @Test
+    public void testTotalTimeSheetMissingDataDecodesUrlEncodedPathVariables() throws Exception {
+        mockMvc.perform(get("/South+Africa/missingTimeSheetCounts"))
+                .andExpect(status().isOk());
+
+        verify(timeSheetService, times(1))
+                .getMissingTimeSheetCountForOfficesInCountry("South Africa");
     }
 
     @Test

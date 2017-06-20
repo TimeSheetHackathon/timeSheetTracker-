@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html ng-app="app">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Timesheet Tracker</title>
+    <script src="/static/webjars/jquery/jquery-3.1.1.min.js"></script>
+    <script src="/static/webjars/jquery/jquery.cookie.js"></script>
+
+    <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
+    <script src="/static/webjars/bootstrap/4.0.0/js/bootstrap.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/webjars/bootstrap/4.0.0/css/bootstrap.css"/>
+
+    <script src="/static/webjars/angularjs/1.6.1/angular.js"></script>
+    <script src="/static/webjars/angularjs/1.6.1/angular-resource.js"></script>
+    <script src="/static/webjars/angularjs/1.6.1/angular-route.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/app.css">
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/directives/project-missing-radial.js"></script>
+    <script src="/static/js/directives/radial-progress-bar.js"></script>
+    <script src="/static/js/directives/defaulter-carousel.js"></script>
+</head>
+<body ng-controller="timesheetController" data-ng-init="init()">
+<nav class="navbar navbar-inverse bg-inverse">
+    <a class="navbar-brand" href="#">
+        <h1 class="navbar-brand mb-0">TIMESHEET TRACKER</h1>
+    </a>
+</nav>
+<div class="main">
+    <div class="container">
+        <div class="row">
+            <div class="col-8 left-panel">
+                <div class="panel-title">
+                    <b>TIMESHEETS FILLED PERCENTAGE</b>
+                </div>
+                <div id="stat-area">
+                    <project chart-data="projectData" ng-if="projectDataGotLoaded"></project>
+                </div>
+            </div>
+            <div class="col-4 right-panel">
+                <div class="panel-title">
+                    <b>DEFAULTERS</b>
+                </div>
+                <div>
+                    <defaulter data="listOfDefaulters" ng-if="defaulterDataHasLoaded"></defaulter>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script type="application/javascript">
+    setTimeout(function(){
+        window.location.reload(1);
+    }, 900000);
+</script>
+</body>
+</html>

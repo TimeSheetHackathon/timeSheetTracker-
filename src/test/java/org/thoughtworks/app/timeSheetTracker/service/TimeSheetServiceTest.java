@@ -187,9 +187,9 @@ public class TimeSheetServiceTest {
     @Test
     public void testGetEmployeesNamesForAProject() throws Exception {
         when(client.getTimeSheetDataForProjectLastWeek()).thenReturn(result);
-        List<String> employeesNames = timeSheetService.getEmployeesNamesForAProject("Bangalore", "Kroger");
-        assertEquals(1, employeesNames.size());
-        assertEquals("M,Gayathri",employeesNames.get(0));
+        List<Employee> employees = timeSheetService.getEmployeesNamesForAProject("Bangalore", "Kroger");
+        assertEquals(1, employees.size());
+        assertEquals("M,Gayathri",employees.get(0).getName());
     }
 
     @Test

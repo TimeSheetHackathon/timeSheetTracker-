@@ -9,18 +9,17 @@ var getColorForPercentage = function (pct) {
     }).color;
 };
 
-app.directive("radial", function ($parse) {
+app.directive("project", function ($parse) {
     return {
         restrict: "E",
         replace: false,
         scope: {data: '=chartData'},
         link: function (scope, element, attrs) {
-
             for (var i = 0; i < scope.data.length; i++) {
                 var radius = 75;
                 var border = 15;
                 var padding = 30;
-                var endPercent = (100 - scope.data[i].missingTimeSheetPercentage) / 100;
+                var endPercent = (100 - scope.data[i].missingTimeSheetCount) / 100;
                 var twoPi = Math.PI * 2;
                 var formatPercent = d3.format('.0%');
                 var boxSize = (radius + padding) * 2;
@@ -29,7 +28,7 @@ app.directive("radial", function ($parse) {
                     .innerRadius(radius)
                     .outerRadius(radius - border);
 
-                var city = scope.data[i].workingLocation;
+                var projectName = scope.data[i].projectName;
                 var parent = d3.select(element[0]);
 
                 var svg = parent.append('svg')
@@ -43,15 +42,11 @@ app.directive("radial", function ($parse) {
 
                 var meter = g.append('g')
                     .attr('class', 'progress-meter')
-                    .attr('id',city)
+                    .attr('id',projectName)
                     .style("cursor","hand")
                     .on('click',function () {
-                        var queryParams = window.location.pathname.split('/');
-                        if(!queryParams[1])
-                            window.location = '/' + this.id;
-                        else{
-                            window.location = '/' + this.id + '/project';
-                        }
+                        window.location='/' + $.cookie('city') +'/project/'+ projectName
+
                     });
 
                 meter.append('path')
@@ -82,21 +77,20 @@ app.directive("radial", function ($parse) {
                     .attr('text-anchor', 'middle')
                     .attr('dy', '.35em');
 
-                var cityText = meter.append('text')
+                var cityText = meter
+                    .append('text')
                     .attr('fill', '#000000')
                     .attr('text-anchor', 'middle')
-                    .attr('style', 'font-size: 16px')
+                    .attr('style', 'font-size: 16px;width: 50px;word-wrap: break-word;')
                     .attr('dy', '100');
 
                 var progress = endPercent;
-
                 foreground.attr('d', arc.endAngle(twoPi * progress));
                 front.attr('d', arc.endAngle(twoPi * progress));
                 numberText.text(formatPercent(progress));
-                cityText.text(city);
+                cityText.text(projectName.match(/.{1,20}/g)[0]+"..");
             }
         }
     }
 });
-
 

@@ -64,16 +64,20 @@ public class TimeSheetService {
         .entrySet().stream()
         .map(projectEntry -> MissingTimeSheetCountForProject.builder()
             .projectName(projectEntry.getKey())
+            .city(city)
             .missingTimeSheetCount(projectEntry.getValue())
             .build())
         .collect(toList());
   }
 
-  public List<String> getEmployeesNamesForAProject(String city, String project) {
-    return s3Client.getTimeSheetDataForProjectLastWeek().stream()
-        .filter(matchCity(city).and(matchProject(project)))
-        .map(MissingTimeSheetData::getEmployeeName)
-        .collect(toList());
+  public List<Employee> getEmployeesNamesForAProject(String city, String project) {
+     return s3Client.getTimeSheetDataForProjectLastWeek().stream()
+            .filter(matchCity(city).and(matchProject(project)))
+            .map(missingTimeSheetData -> Employee.builder()
+                    .name(missingTimeSheetData.getEmployeeName())
+                    .id(Integer.valueOf(missingTimeSheetData.getEmployeeId()))
+                    .build())
+            .collect(toList());
   }
 
   public List<Employee> getEmployeesNamesForACity(String city) {

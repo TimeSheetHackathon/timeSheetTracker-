@@ -9,5 +9,5 @@ import lombok.Data;
 public class MissingTimeSheetCountForProject {
     private String projectName;
     private Long missingTimeSheetCount;
-
+    private String city;
 }
